@@ -110,11 +110,17 @@ class User extends CI_Controller {
 
     public function dataDelete($id)
     {
-
-
-
         $this->users_model->UpdateUser(array('status'=>0),array('id' => $id ));
         redirect(base_url('User'));
+    }
+
+    public function dataDeleteModal(){
+        $id = $this->input->post('id');
+        //echo $id; exit;
+        $this->users_model->DeleteUser(array('id'=>$id));
+        $status = True;
+        $result = array('statusR' => $status);
+        echo json_encode($result);
 
     }
 

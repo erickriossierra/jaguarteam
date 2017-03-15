@@ -6,7 +6,7 @@ $this->load->view('header');
 <link href="<?php echo base_url() ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
    <link href="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 
-<div class="right_col" role="main">
+<div class="right_col noheigthwidt" role="main" >
 
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
@@ -20,7 +20,7 @@ $this->load->view('header');
 
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
-                <tr>
+                <tr id="filterrow">
                     <th>Id</th>
                     <th>Giro</th>
                     <th>Estatus</th>
@@ -64,13 +64,23 @@ $this->load->view('footer');
     <script>
         $(document).ready(function() {
 
-
-
-            //$('#datatable-responsive').DataTable();
+          /* Setup - add a text input to each footer cell
+  $('#datatable-responsive thead tr#filterrow th').each( function () {
+      var title = $('#datatable-responsive thead th').eq( $(this).index() ).text();
+      $(this).html( '<input type="text" onclick="stopPropagation(event);" placeholder="Search '+title+'" />' );
+  } );
+  // Apply the filter
+    $("#datatable-responsive thead input").on( 'keyup change', function () {
+        table
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    } );
+            */
 
           var table = $('#datatable-responsive').DataTable({
                 processing: true,
-
+                ordering: false,
                 ajax: "<?php echo base_url('giro/dataListJson') ?>",
                 columns: [
                             { "data": "id" },
@@ -87,7 +97,7 @@ $this->load->view('footer');
                             "targets": 3,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
-                              return '<a href="<?php echo base_url('giro/editView/') ?>'+data+'">Editar</a> <a href="<?php echo base_url('giro/dataDelete/') ?>'+data+'">Eliminar</a>';
+                              return '<a href="<?php echo base_url('giro/editView/') ?>'+data+'">Editar</a>';
                                  }
                           } ]
 

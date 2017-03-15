@@ -6,44 +6,29 @@ $this->load->view('header');
 <link href="<?php echo base_url() ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
    <link href="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 
-<div class="right_col noheigthwidt" role="main">
+<div class="right_col noheigthwidt" role="main" >
 
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-            <h2>Tabla de Usuarios</h2>
+            <h2>Tabla de Sectores</h2>
 
             <div class="clearfix"></div>
-            <a href="<?php echo base_url() ?>user/addView"> <button type="button" class="btn btn-success">Agregar Usuario</button></a>
+            <a href="<?php echo base_url() ?>sector/addView"> <button type="button" class="btn btn-success">Agregar Sector</button></a>
         </div>
         <div class="x_content">
 
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>A. Paterno</th>
-                    <th>A. Materno</th>
-                    <th>Usuario</th>
-                    <th>Tipo Usuario</th>
-                    <th>Estado</th>
+                <tr id="filterrow">
+
+                    <th>Sector</th>
+                    <th>Editar Sector</th>
+                    <th>Agregar Subsector</th>
 
                 </tr>
                 </thead>
-                <tbody>
-                <?php foreach ($UserList as $row=>$Userlist){ ?>
-                <tr>
-                    <td><a href="<?php echo base_url() ?>user/editView/<?php echo html_escape($Userlist->id) ?>"><?php echo html_escape($Userlist->nombre) ?></a></td>
-                    <td><?php echo html_escape($Userlist->apellido_p)?></td>
-                    <td><?php echo html_escape($Userlist->apellido_m)?></td>
-                    <td><?php echo html_escape($Userlist->usuario)?></td>
-                    <td><?php echo html_escape($Userlist->tipo_usuario_id)?></td>
-                    <td><?php echo html_escape($Userlist->status) =='1' ? '<button type="button" class="btn btn-primary">Activo</button>' : '<button type="button" class="btn btn-warning">Desactivado</button>'?></td>
 
-
-                </tr>
-                <?php } ?>
-                </tbody>
             </table>
 
         </div>
@@ -78,17 +63,47 @@ $this->load->view('footer');
     <script>
         $(document).ready(function() {
 
+          /* Setup - add a text input to each footer cell
+  $('#datatable-responsive thead tr#filterrow th').each( function () {
+      var title = $('#datatable-responsive thead th').eq( $(this).index() ).text();
+      $(this).html( '<input type="text" onclick="stopPropagation(event);" placeholder="Search '+title+'" />' );
+  } );
+  // Apply the filter
+    $("#datatable-responsive thead input").on( 'keyup change', function () {
+        table
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+    } );
+            */
+
+          var table = $('#datatable-responsive').DataTable({
+                processing: true,
+                ordering: false,
+                ajax: "<?php echo base_url('sector/dataListJson') ?>",
+                columns: [
+                            { "data": "nombre" },
+
+                        ],
+                columnDefs: [ {
+                            "targets": 1,
+                            "data": "id",
+                            "render": function ( data, type, full, meta ) {
+                              return '<a href="<?php echo base_url('Sector/editView/') ?>'+data+'">Editar</a>';
+                                 }
+                          },
+                          {
+                            "targets": 2,
+                            "data": "id",
+                            "render": function ( data, type, full, meta ) {
+                              return '<a href="<?php echo base_url('SubSector/editView/') ?>'+data+'">Añadir</a>';
+                                 }
+                          } ]
 
 
-            $('#datatable-responsive').DataTable({ordering: false,});
-
-            $('#datatable-scroller').DataTable({
-                ajax: "js/datatables/json/scroller-demo.json",
-                deferRender: true,
-                scrollY: 380,
-                scrollCollapse: true,
-                scroller: true
             });
+
+            setInterval( function () {table.ajax.reload();}, 20000 );
         });
     </script>
     <!-- /Datatables -->

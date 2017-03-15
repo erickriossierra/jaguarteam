@@ -102,7 +102,9 @@ $this->load->view('header');
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-3">
                                   <a href="<?php echo base_url('user') ?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+
                                     <button id="send" type="submit" class="btn btn-success">Guardar</button>
+                                     <button type="button" name="button"  onclick="mConfirmacion(<?php echo html_escape($UserInfo[0]->id) ?>)"  class="btn btn-danger">Eliminar</button>
                                 </div>
                             </div>
 
@@ -116,6 +118,35 @@ $this->load->view('header');
 
 
 </div>
+</div>
+
+
+<!---modal eliminar--->
+
+
+<div class="modal fade" id="mConfirmacion">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Eliminar</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="form-group " id="alamr">
+                    <label for="comment">¿Esta seguro de Eliminar al Usuario?</label>
+
+                </div>
+
+
+            <input type="hidden" value="" id="idUsuario" name="idUsuario">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="DeleteModal();">Eliminar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -155,5 +186,38 @@ $this->load->view('footer');
 
         return false;
     });
+
+
+    //modal mAlarms
+       var mConfirmacion = function(id) {
+
+           $('#mConfirmacion').modal('show');
+           $('#idUsuario').val(id);
+
+       }
+
+
+       var DeleteModal = function() {
+           var id = $('#idUsuario').val();
+           var link = '<?php echo base_url('user'); ?>';
+
+           $.post("<?php echo base_url('user/dataDeleteModal') ?>",{ id:id},
+               function( data ) {
+                   data = JSON.parse(data);
+                   //console.log(data.statusR);
+                   var status = data.statusR;
+                   if (status == true) {
+                       window.location.replace(link);
+
+
+                   }
+
+               }
+
+           );
+
+       }
+
+
 </script>
 <!-- /validator -->
