@@ -33,12 +33,6 @@ $this->load->view('header');
                                             <input id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" type="text">
                                         </div>
                                     </div>
-                                    <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Apellido Materno</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="apellido_materno" class="form-control col-md-7 col-xs-12" name="apellido_materno" type="text">
-                                        </div>
-                                    </div>
 
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Apellido Paterno</label>
@@ -48,9 +42,21 @@ $this->load->view('header');
                                     </div>
 
                                     <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Apellido Materno</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="apellido_materno" class="form-control col-md-7 col-xs-12" name="apellido_materno" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Carrera</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="carrera" class="form-control col-md-7 col-xs-12" name="carrera" type="text">
+                                          <select name="carrera" id="carrera" class="form-control" >
+                                          <?php foreach ($TipoCarrerasList as $key): ?>
+                                              <option  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
+
+                                          <?php endforeach ?>
+                                        </select>
                                         </div>
                                     </div>
 
@@ -59,7 +65,7 @@ $this->load->view('header');
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo_practica">Tipo practica</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <select name="tipo_usuario_id" id="tipo_usuario" class="form-control" >
+                                          <select name="tipo_practica" id="tipo_practica" class="form-control" >
                                           <?php foreach ($TipoPracticasList as $key): ?>
                                               <option  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
 
@@ -72,7 +78,8 @@ $this->load->view('header');
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Empresa</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="empresa" class="form-control col-md-7 col-xs-12" name="empresa" type="text">
+                                            <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text">
+                                            <input type="hidden" name="idEmpresa" id="idEmpresa">
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -149,26 +156,24 @@ $this->load->view('footer');
 <script>
      $(document).ready(function() {
 
-       /*alumnos*/
-       $( "#nombre" ).autocomplete({
+       /*Empresa*/
+       $( "#empresa" ).autocomplete({
             minLength: 0,
-            source: '<?php echo base_url() ?>PracticasPro/BuscarAlumno',
+            source: '<?php echo base_url() ?>PracticasPro/BuscarEmpresa',
             select: function( event, ui ) {
-                $( "#nombre" ).val( ui.item.nombre );
-                $( "#apellido_materno" ).val( ui.item.apellido_materno );
-                $( "#apellido_paterno" ).val( ui.item.apellido_paterno );
-                $( "#carrera" ).val( ui.item.carrera );
+                $( "#empresa" ).val( ui.item.nombre_empresa );
+                $( "#idEmpresa" ).val( ui.item.id );
                 return false;
             }
         })
             .autocomplete( "instance" )._renderItem = function( ul, item ) {
             return $( "<li>" )
             //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
-                .append( "<div>" + item.name + "</div>" )
+                .append( "<div>" + item.nombre_empresa + "</div>" )
                 .appendTo( ul );
                  };
 
-
+        /*Habilitar Registro*/
 
        $('#practica_inicio').daterangepicker({
          singleDatePicker: true,

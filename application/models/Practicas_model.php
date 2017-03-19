@@ -79,11 +79,11 @@ class Practicas_model extends CI_Model {
     }
 
       /*Carrera*/
-      public function GetCareras($where='')
+      public function TipoCarrerasList()
       {
-          $this->db->where($where);
-          $this->db->delete('practicas_profesionales');
-          $result = $this->db->get('alumnos');
+          $query=$this->db->get('carreras');
           //echo $this->db->last_query();
+          return $query->result();
+
       }
 }

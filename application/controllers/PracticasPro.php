@@ -13,6 +13,8 @@ class PracticasPro extends CI_Controller {
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
 
         $this->load->model('practicas_model');
+        $this->load->model('empresas_model');
+        $this->load->model('alumnos_model');
         $this->load->helper('form');
     }
 
@@ -51,9 +53,11 @@ class PracticasPro extends CI_Controller {
     public function addView()
     {
         $TipoPracticasList=$this->practicas_model->TipoPracticasList();
+        $TipoCarrerasList=$this->practicas_model->TipoCarrerasList();
         $data = array(
             'title' => 'prueba',
             'TipoPracticasList'=>$TipoPracticasList,
+            'TipoCarrerasList'=>$TipoCarrerasList,
 
         );
         $this->parser->parse('practicas_pro/new',$data);
@@ -62,10 +66,27 @@ class PracticasPro extends CI_Controller {
 
     public function dataInsert()
     {
-
+        /*Insertar tabla Alumnos*/
         $nombre           = $this->input->post('nombre');
-        $value_insert =array('nombre'=>$nombre);
-        $this->practicas_model->CreatePracticas($value_insert);
+        $apellido_paterno = $this->input->post('apellido_paterno');
+        $apellido_materno = $this->input->post('apellido_materno');
+        $id_carrera       = $this->input->post('carrera');
+        $value_insert=array('nombre'=>$nombre,'apellido_paterno'=>$apellido_paterno,'apellido_materno'=>$apellido_materno,'carreras_id'=>$id_carrera);
+         $Alumnos_id=  $this->alumnos_model->CreateAlumno($value_insert);
+
+        /*Insertar tabla Practicas*/
+        $tipo_practica_id = $this->input->post('tipo_practica');
+        $empresas_id = $this->input->post('idEmpresa');
+        $representante= $this->input->post('representante');
+        $registrocp= $this->input->post('registrocp');
+        $practica_inicio= $this->input->post('practica_inicio');
+        $practica_fin= $this->input->post('practica_fin');
+        $constancia= $this->input->post('constancia');
+        $info= $this->input->post('info');
+
+        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
+        $this->practicas_model->CreatePracticas($value_insert_practica);
+
         redirect(base_url('PracticasPro'));
 
     }
@@ -112,28 +133,30 @@ class PracticasPro extends CI_Controller {
 
     }
 
-    /*Busqueda de Alumno*/
-    public function BuscarAlumno(){
+    /*Busqueda de Empresas*/
+    public function BuscarEmpresa(){
       $searchTerm = $this->input->get('term');
 
 
-       $search=$this->practicas_model->GetBuscarAlumno(array('nombre'=>$searchTerm));
-       
-       $data=array();
+       $search=$this->empresas_model->GetBuscarEmpresa(array('nombre_empresa'=>$searchTerm));
 
-       /*foreach ($search as $key) {
+       $data=array();
+       if ($search==FALSE)
+       {
+         $data[]=array(
+         "id"=>'0',
+         "nombre_empresa"   => 'No existe',
+         );
+       }else{
+       foreach ($search as $key) {
            $data[]=array(
            "id"=>$key->id,
-           "name"   => $key->name,
-           "phone"   => $key->phone,
-           "email" => $key->email,
-           "address" => $key->address,
-           "contact_name" => $key->contact_name,
-           "directive" => $key->directive);
+           "nombre_empresa"   => $key->nombre_empresa,
+           );
 
        }
-
-       echo json_encode($data);*/
+}
+       echo json_encode($data);
     }
 
 }
