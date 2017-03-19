@@ -58,7 +58,7 @@
                             <li><a href="<?php echo base_url() ?>giro"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Giros Empresa</span></a> </li>
                             <li><a href="<?php echo base_url() ?>sector"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Sector</span></a> </li>
                             <?php //} ?>
-                            <li><a href="<?php echo base_url() ?>contact"><i class="fa fa-users" aria-hidden="true"></i>Contactos</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>PracticasPro"><i class="fa fa-users" aria-hidden="true"></i>Practicas Profesionales</span></a> </li>
                             <li><a href="<?php echo base_url() ?>record"><i class="fa fa-folder" aria-hidden="true"></i>Fichas de Trabajos</span></a> </li>
 
 

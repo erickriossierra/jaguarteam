@@ -41,7 +41,7 @@ class Welcome extends CI_Controller {
 
                 redirect(base_url('user'));
             }else{
-              exit;
+              
                 $tipomsg = 1;
                 $msg= "Usuario o contraseña incorrecta";
             }
