@@ -35,7 +35,7 @@ class Alumnos_model extends CI_Model {
     {
         $this->db->where($where);
         $this->db->update('alumnos', $data);
-        //echo $this->db->last_query();
+        echo $this->db->last_query();
     }
 
     public function DeleteAlumno($where)
@@ -71,7 +71,18 @@ class Alumnos_model extends CI_Model {
 
     }
 
+    /*Practicas List con Alumnos*/
+    public function AlumnosCarrerasList()
+  {
 
+      $this->db->select("alumnos.id, alumnos.nombre, apellido_materno,apellido_paterno,carreras.Nombre as carrera ");
+      $this->db->from("alumnos");
+      $this->db->join("carreras", "alumnos.carreras_id=carreras.id");
+      $this->db->order_by("alumnos.nombre","DESC");
+      $query = $this->db->get();
+      //echo $this->db->last_query();
+      return $query->result();
+  }
 
 
 

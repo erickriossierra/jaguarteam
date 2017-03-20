@@ -20,7 +20,7 @@ class Practicas_model extends CI_Model {
     public function CreatePracticas($data)
     {
         $this->db->insert('practicas_profesionales', $data);
-      //  echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $this->db->insert_id();
     }
 
@@ -86,4 +86,25 @@ class Practicas_model extends CI_Model {
           return $query->result();
 
       }
+
+      /*Historial Practica*/
+
+      public function HistorialPracticasList($id='')
+      {
+        $this->db->select("*");
+        $this->db->select("tipo_practica.Nombre as tipo_practica");
+        $this->db->from("practicas_profesionales");
+        $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id");
+        $this->db->join("empresas", "practicas_profesionales.empresas_id=empresas.id");
+        $this->db->where($id);
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+
+      }
+
+
+
+
+
 }

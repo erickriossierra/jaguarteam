@@ -21,12 +21,12 @@ $this->load->view('header');
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr id="filterrow">
-                    <th>Id</th>
-                    <th>Giro</th>
-                    <th>Estatus</th>
-                    <th>Editar</th>
-
-
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Paterno</th>
+                    <th>Carrera</th>
+                    <th>Editar Alumno</th>
+                    <th>Bitácora Practicas</th>
                 </tr>
                 </thead>
 
@@ -63,48 +63,36 @@ $this->load->view('footer');
     <!-- Datatables -->
     <script>
         $(document).ready(function() {
-
-          /* Setup - add a text input to each footer cell
-  $('#datatable-responsive thead tr#filterrow th').each( function () {
-      var title = $('#datatable-responsive thead th').eq( $(this).index() ).text();
-      $(this).html( '<input type="text" onclick="stopPropagation(event);" placeholder="Search '+title+'" />' );
-  } );
-  // Apply the filter
-    $("#datatable-responsive thead input").on( 'keyup change', function () {
-        table
-            .column( $(this).parent().index()+':visible' )
-            .search( this.value )
-            .draw();
-    } );
-            */
-
           var table = $('#datatable-responsive').DataTable({
                 processing: true,
                 ordering: false,
-                ajax: "<?php echo base_url('giro/dataListJson') ?>",
+                ajax: "<?php echo base_url('Alumnos/AlumnosCarrerasListJSON') ?>",
                 columns: [
-                            { "data": "id" },
                             { "data": "nombre" },
+                            { "data": "apellido_materno" },
+                            { "data": "apellido_paterno" },
+                            { "data": "carrera" },
 
                         ],
                 columnDefs: [ {
-                           "targets": 2,
-                           "data": "status",
+                           "targets": 4,
+                           "data": "id",
                            "render": function ( data, type, full, meta ) {
-                             return data== 1 ? '<button type="button" class="btn btn-primary">Activo</button>' : '<button type="button" class="btn btn-warning">Desactivado</button>';
+                             return '<a href="<?php echo base_url('alumnos/editView/') ?>'+data+'">Editar</a>';
+                            // return data== 1 ? '<button type="button" class="btn btn-primary">Activo</button>' : '<button type="button" class="btn btn-warning">Desactivado</button>';
                                 }
                          },{
-                            "targets": 3,
+                            "targets": 5,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
-                              return '<a href="<?php echo base_url('giro/editView/') ?>'+data+'">Editar</a>';
+                              return '<a href="<?php echo base_url('PracticasPro/bitacoraView/') ?>'+data+'">Ver</a>';
                                  }
                           } ]
 
 
             });
 
-            setInterval( function () {table.ajax.reload();}, 20000 );
+
         });
     </script>
     <!-- /Datatables -->

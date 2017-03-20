@@ -6,7 +6,7 @@ $this->load->view('header');
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>Alta Giro</h3>
+                        <h3>Editar Giro</h3>
                     </div>
 
                 </div>

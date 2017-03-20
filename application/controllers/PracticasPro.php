@@ -16,6 +16,7 @@ class PracticasPro extends CI_Controller {
         $this->load->model('empresas_model');
         $this->load->model('alumnos_model');
         $this->load->helper('form');
+        $this->load->helper('aux_helper');
     }
 
 
@@ -32,23 +33,6 @@ class PracticasPro extends CI_Controller {
 
     }
 
-    public function dataListJson(){
-      $PracticasList=$this->practicas_model->PracticasList();
-      $data=array();
-        foreach ($PracticasList as $key) {
-            $data[]=array(
-            "id"=>$key->id,
-            "nombre"=> $key->nombre,
-            "status"=> $key->status
-            );
-
-        }
-
-        echo '{"data": '.json_encode($data).'}';
-
-
-
-    }
 
     public function addView()
     {
@@ -79,8 +63,9 @@ class PracticasPro extends CI_Controller {
         $empresas_id = $this->input->post('idEmpresa');
         $representante= $this->input->post('representante');
         $registrocp= $this->input->post('registrocp');
-        $practica_inicio= $this->input->post('practica_inicio');
-        $practica_fin= $this->input->post('practica_fin');
+        $practica_inicio= date_format_db($this->input->post('practica_inicio'));
+
+        $practica_fin= date_format_db($this->input->post('practica_fin'));
         $constancia= $this->input->post('constancia');
         $info= $this->input->post('info');
 
@@ -108,6 +93,70 @@ class PracticasPro extends CI_Controller {
         $this->parser->parse('practicas_pro/edit',$data);
 
     }
+
+    public function bitacoraView($id)
+    {
+        $GetIdAlumnos=$this->alumnos_model->GetIdAlumno(array('id'=>$id));
+        $GetIdPracticas=$this->practicas_model->GetIdPracticas(array('alumnos_id'=>$id));
+        $TipoCarrerasList=$this->practicas_model->TipoCarrerasList();
+        $TipoPracticasList=$this->practicas_model->TipoPracticasList();
+        $HistorialPracticasList=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.Alumnos_id'=>$id));
+        $data = array(
+            'title' => 'prueba',
+            'GetIdPracticas'=> $GetIdPracticas,
+            'GetIdAlumnos'=> $GetIdAlumnos,
+            'TipoCarrerasList'=>$TipoCarrerasList,
+            'TipoPracticasList'=>$TipoPracticasList,
+            'HistorialPracticasList'=>$HistorialPracticasList
+        );
+      // print_r($HistorialPracticasList);
+        $this->parser->parse('practicas_pro/bitacora',$data);
+    }
+
+    public function dataInsertBitacora($id)
+    {
+        $Alumnos_id=  $id;
+        /*Insertar tabla Practicas*/
+        $tipo_practica_id = $this->input->post('tipo_practica');
+        $empresas_id = $this->input->post('idEmpresa');
+        $representante= $this->input->post('representante');
+        $registrocp= $this->input->post('registrocp');
+        $practica_inicio= date_format_db($this->input->post('practica_inicio'));
+
+        $practica_fin= date_format_db($this->input->post('practica_fin'));
+        $constancia= $this->input->post('constancia');
+        $info= $this->input->post('info');
+
+        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
+        $this->practicas_model->CreatePracticas($value_insert_practica);
+
+        redirect(base_url('PracticasPro/bitacoraView/'.$id));
+
+    }
+
+
+
+    /*Busqueda de Empresas*/
+    public function HistorialPracticasJson(){
+      $id = $this->input->post('id');
+      $HistorialPracticasList=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.id'=>$id));
+       $data=array();
+       foreach ($HistorialPracticasList as $key) {
+           $data[]=array(
+           "nombre_empresa"   => $key->nombre_empresa,
+           "tipo_practica"    => $key->tipo_practica,
+           "representante"    => $key->representante,
+           "registroCP"       =>$key->registroCP,
+           "practica_inicio"  =>date_format_esp($key->practica_inicio),
+           "practica_fin"     =>date_format_esp($key->practica_fin),
+           "constancia"       =>$key->constancia,
+           "info"             =>$key->info,
+           );
+
+       }
+       echo json_encode($data);
+    }
+
 
 
     public function dataUpdate($id)
@@ -155,7 +204,7 @@ class PracticasPro extends CI_Controller {
            );
 
        }
-}
+      }
        echo json_encode($data);
     }
 

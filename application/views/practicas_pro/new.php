@@ -107,7 +107,7 @@ $this->load->view('header');
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="constancia">Constancia</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="constancia">Contrato</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="constancia" class="form-control col-md-7 col-xs-12" name="constancia" type="text">
                                         </div>
@@ -122,7 +122,7 @@ $this->load->view('header');
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-6 col-md-offset-3">
-                                          <a href="<?php echo base_url('Giro') ?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+                                          <a href="<?php echo base_url('PracticasPro') ?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
                                             <button id="send" type="submit" class="btn btn-success">Guardar</button>
                                         </div>
                                     </div>
@@ -176,23 +176,19 @@ $this->load->view('footer');
         /*Habilitar Registro*/
 
        $('#practica_inicio').daterangepicker({
-         singleDatePicker: true,
-         calender_style: "picker_4",
-         timeZone: 'America/Mexico_City',
-           locale: {
-               format: 'MM/DD/YYYY',
-
-           }
+        locale: {
+        format: 'DD-MM-YYYY'
+        },
+        showDropdowns: true,
+        singleDatePicker: true,
        });
 
        $('#practica_fin').daterangepicker({
+         locale: {
+         format: 'DD-MM-YYYY'
+         },
+         showDropdowns: true,
          singleDatePicker: true,
-         calender_style: "picker_4",
-         timeZone: 'America/Mexico_City',
-           locale: {
-               format: 'MM/DD/YYYY',
-
-           }
        });
 
      });
