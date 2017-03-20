@@ -79,14 +79,12 @@ class PracticasPro extends CI_Controller {
 
     public function editView($id)
     {
-        $GetIdPracticas=$this->practicas_model->GetIdPracticas(array('id'=>$id));
-
+        $GetIdPracticas=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.id'=>$id));
+          $TipoPracticasList=$this->practicas_model->TipoPracticasList();
         $data = array(
             'title' => 'prueba',
             'GetIdPracticas'=> $GetIdPracticas,
-
-
-
+            'TipoPracticasList'=>$TipoPracticasList
         );
 
        //print_r($tipo_usuario);
@@ -163,12 +161,24 @@ class PracticasPro extends CI_Controller {
     {
 
 
-      $nombre           = $this->input->post('nombre');
-      $status           = $this->input->post('status');
-      $value_update =array('nombre'=>$nombre,'status'=>$status);
+      $tipo_practica_id = $this->input->post('tipo_practica');
+      $empresas_id = $this->input->post('idEmpresa');
+      $representante= $this->input->post('representante');
+      $registrocp= $this->input->post('registrocp');
+      $practica_inicio= date_format_db($this->input->post('practica_inicio'));
+
+      $practica_fin= date_format_db($this->input->post('practica_fin'));
+      $constancia= $this->input->post('constancia');
+      $info= $this->input->post('info');
+
+      $value_update =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info);
       $this->practicas_model-> UpdatePracticas($value_update,array('id' => $id ));
-        //$this->parser->parse('welcome',$data);
-        redirect(base_url('PracticasPro'));
+
+
+      $idAlumno=$this->practicas_model->GetIdPracticas(array('id' => $id ));
+
+      redirect(base_url('PracticasPro/bitacoraView/'.$idAlumno[0]->Alumnos_id));
+
 
     }
 

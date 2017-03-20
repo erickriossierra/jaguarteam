@@ -93,6 +93,7 @@ class Practicas_model extends CI_Model {
       {
         $this->db->select("*");
         $this->db->select("tipo_practica.Nombre as tipo_practica");
+        $this->db->select("empresas.id as empresasid");
         $this->db->from("practicas_profesionales");
         $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id");
         $this->db->join("empresas", "practicas_profesionales.empresas_id=empresas.id");

@@ -100,8 +100,8 @@ $this->load->view('header');
                                                     <td><?php echo date_format_esp(html_escape($row->practica_inicio))?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_fin))?></td>
 
-                                                    <td><label onclick="mPracticaView(<?php echo html_escape($row->id) ?>)">Ver</label></td>
-                                                    <td><?php echo html_escape($row->id)?></td>
+                                                    <td><label style="cursor:pointer" onclick="mPracticaView(<?php echo html_escape($row->id) ?>)">Ver</label></td>
+                                                    <td><a href="<?php echo base_url('PracticasPro/editView/')?><?php echo html_escape($row->id) ?>">Edit</a></td>
 
                                                 </tr>
                                                 <?php } ?>
@@ -142,6 +142,12 @@ $this->load->view('header');
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text">
                                             <input type="hidden" name="idEmpresa" id="idEmpresa">
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                          <a onclick="" style="cursor:pointer">  Agregar empresa si no existe</a>
                                         </div>
                                     </div>
                                     <div class="item form-group">

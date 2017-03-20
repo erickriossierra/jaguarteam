@@ -15,8 +15,8 @@ function getAlarmsData($id)
 
 function date_format_esp($date){
 
-    $dateChange= date('d-m-Y', strtotime($date));
-    return $dateChange;
+    $dateformat = new DateTime("$date");
+    return $dateformat->format('d-m-Y');
 }
 function date_format_db($date){
 
