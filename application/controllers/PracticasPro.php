@@ -218,4 +218,15 @@ class PracticasPro extends CI_Controller {
        echo json_encode($data);
     }
 
+
+    public function Reporte()
+    {
+        $data = array(
+            'title' => 'prueba',
+
+        );
+        $this->parser->parse('practicas_pro/listReport',$data);
+
+    }
+
 }

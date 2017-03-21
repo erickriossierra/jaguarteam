@@ -100,8 +100,8 @@ $this->load->view('header');
                                                     <td><?php echo date_format_esp(html_escape($row->practica_inicio))?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_fin))?></td>
 
-                                                    <td><label style="cursor:pointer" onclick="mPracticaView(<?php echo html_escape($row->id) ?>)">Ver</label></td>
-                                                    <td><a href="<?php echo base_url('PracticasPro/editView/')?><?php echo html_escape($row->id) ?>">Edit</a></td>
+                                                    <td><label style="cursor:pointer" onclick="mPracticaView(<?php echo html_escape($row->practicasid) ?>)">Ver</label></td>
+                                                    <td><a href="<?php echo base_url('PracticasPro/editView/')?><?php echo html_escape($row->practicasid) ?>">Edit</a></td>
 
                                                 </tr>
                                                 <?php } ?>
@@ -147,7 +147,7 @@ $this->load->view('header');
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <a onclick="" style="cursor:pointer">  Agregar empresa si no existe</a>
+                                          <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -282,6 +282,36 @@ $this->load->view('header');
 </div>
 
 
+<!--Empresa Modal Agregar-->
+<div class="modal fade" id="mEmpresaAgregarModal">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2>Agregar Empresa</h2>
+            </div>
+            <div class="modal-body form-horizontal form-label-left">
+
+              <div class="form-group " id="name">
+                  <label for="name">Nombre Empresa</label>
+                  <input id="nameEmpresa" type="text" name="nameEmpresa" class="optional form-control col-md-7 col-xs-12" required="required">
+              </div>
+
+
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="AgregarEmpresaModal();">Guardar</button>
+          </div>
+
+              </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <?php
 $this->load->view('footer');
 ?>
@@ -341,10 +371,11 @@ $this->load->view('footer');
      var mPracticaView = function(id) {
            $('#mPracticaViewEdit').modal('show');
            var id=id;
+           console.log(id);
            $.post("<?php echo base_url('PracticasPro/HistorialPracticasJson') ?>",{ id:id},
                function( data ) {
                    data = JSON.parse(data);
-                   console.log(data[0].nombre_empresa);
+                   //console.log(data[0].nombre_empresa);
                        $('#mempresa').val(data[0].nombre_empresa);
                        $('#mtipo_practica').val(data[0].tipo_practica);
                        $('#mrepresentante').val(data[0].representante);
@@ -357,4 +388,36 @@ $this->load->view('footer');
                }
            );
        }
+
+       /*Agregar Empresa*/
+       var mEmpresaAgregar = function() {
+        $('#mEmpresaAgregarModal').modal('show');
+    }
+
+
+    var AgregarEmpresaModal = function() {
+       var nameEmpresa = $('#nameEmpresa').val();
+
+       if ( nameEmpresa == "") {
+         alert("Favor de ingresa el nombre de la empresa");
+      return false;
+      }
+       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_empresa:nameEmpresa},
+           function( data ) {
+               data = JSON.parse(data);
+               //console.log(data.statusR);
+               var status = data.statusR;
+               if (status == true) {
+                   //se limpia el form
+                    $('#nameEmpresa').val('');
+                    $('#mEmpresaAgregarModal').modal('toggle');
+                   //$("form[name='FormRecord']").submit();
+                   //location.reload();
+               }
+
+           }
+
+       );
+
+   }
    </script>

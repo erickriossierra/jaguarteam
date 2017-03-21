@@ -74,7 +74,7 @@ $this->load->view('header');
 
                                               <option value=""></option>
                                               <?php foreach ($tipo_usuario as $key): ?>
-                                                  <option <?php if($key->id ==  html_escape($UserInfo[0]->tipo_usuario_id)) echo 'selected' ?> value="<?php echo $key->id ?>"><?php echo $key->tipo ?></option>
+                                                  <option  value="<?php echo $key->id ?>"><?php echo $key->tipo ?></option>
 
 
                                               <?php endforeach ?>

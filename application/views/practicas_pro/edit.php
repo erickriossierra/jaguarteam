@@ -21,8 +21,8 @@ $this->load->view('header');
                             </div>
                             <div class="x_content">
 
-                                <form class="form-horizontal form-label-left" novalidate action="<?php echo base_url() ?>PracticasPro/dataUpdate/<?php echo html_escape($GetIdPracticas[0]->id) ?>" method="post" accept-charset="utf-8">
-                                  <h2>Datos Practica</h2>
+                                <form class="form-horizontal form-label-left" novalidate action="<?php echo base_url() ?>PracticasPro/dataUpdate/<?php echo html_escape($GetIdPracticas[0]->practicasid) ?>" method="post" accept-charset="utf-8">
+                                  <h2> Datos Practica</h2>
                                   <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo_practica">Tipo practica</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">

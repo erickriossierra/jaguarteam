@@ -92,6 +92,7 @@ class Practicas_model extends CI_Model {
       public function HistorialPracticasList($id='')
       {
         $this->db->select("*");
+        $this->db->select("practicas_profesionales.id as practicasid");
         $this->db->select("tipo_practica.Nombre as tipo_practica");
         $this->db->select("empresas.id as empresasid");
         $this->db->from("practicas_profesionales");

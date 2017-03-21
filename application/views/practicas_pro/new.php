@@ -80,6 +80,13 @@ $this->load->view('header');
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text">
                                             <input type="hidden" name="idEmpresa" id="idEmpresa">
+
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                          <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -145,6 +152,35 @@ $this->load->view('footer');
 ?>
 
 
+
+<!--Empresa Modal Agregar-->
+<div class="modal fade" id="mEmpresaAgregarModal">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2>Agregar Empresa</h2>
+            </div>
+            <div class="modal-body form-horizontal form-label-left">
+
+              <div class="form-group " id="name">
+                  <label for="name">Nombre Empresa</label>
+                  <input id="nameEmpresa" type="text" name="nameEmpresa" class="optional form-control col-md-7 col-xs-12" required="required">
+              </div>
+
+
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="AgregarEmpresaModal();">Guardar</button>
+          </div>
+
+              </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- validator -->
 
 <script src="<?php echo base_url() ?>vendors/validator/validator.js"></script>
@@ -192,4 +228,37 @@ $this->load->view('footer');
        });
 
      });
+   </script>
+   <script>
+       /*Agregar Empresa*/
+       var mEmpresaAgregar = function() {
+        $('#mEmpresaAgregarModal').modal('show');
+    }
+
+
+    var AgregarEmpresaModal = function() {
+       var nameEmpresa = $('#nameEmpresa').val();
+
+       if ( nameEmpresa == "") {
+         alert("Favor de ingresa el nombre de la empresa");
+      return false;
+      }
+       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_empresa:nameEmpresa},
+           function( data ) {
+               data = JSON.parse(data);
+               //console.log(data.statusR);
+               var status = data.statusR;
+               if (status == true) {
+                   //se limpia el form
+                    $('#nameEmpresa').val('');
+                    $('#mEmpresaAgregarModal').modal('toggle');
+                   //$("form[name='FormRecord']").submit();
+                   //location.reload();
+               }
+
+           }
+
+       );
+
+   }
    </script>
