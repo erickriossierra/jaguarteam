@@ -26,23 +26,28 @@ class Empresa extends CI_Controller {
 
         $data = array(
             'title' => 'prueba',
-
-
-
         );
-
         $this->parser->parse('empresas/list',$data);
 
     }
 
     public function dataListJson(){
-      $EmpresasList=$this->empresas_model->EmpresasList();
+      $EmpresasList=$this->empresas_model->EmpresaList();
       $data=array();
         foreach ($EmpresasList as $key) {
             $data[]=array(
-            "id"=>$key->id,
-            "nombre"=> $key->nombre,
-            "status"=> $key->status
+            "id"=>$key->empresasid,
+            "nombre_empresa"=>$key->nombre_empresa,
+            "clasificacion_empresa"=>$key->clasificacion,
+            "giroempresa"=>$key->giroempresa,
+            "calle"=> $key->calle,
+            "num_inter"=> $key->num_inter,
+            "num_exter"=> $key->num_exter,
+            "cruzamiento"=> $key->cruzamientos,
+            "colonia"=> $key->colonia,
+            "cp"=> $key->cp,
+            "nombre_comercial"=> $key->nombre_comercial,
+            "nombre_razon_social"=> $key->nombre_razon_social,
             );
 
         }
@@ -193,6 +198,35 @@ class Empresa extends CI_Controller {
         $nombre           = $this->input->post('nombre_empresa');
         $value_insert =array('nombre_empresa'=>$nombre);
         $this->empresas_model->CreateEmpresa($value_insert);
+        $status = True;
+        $result = array('statusR' => $status);
+
+
+       echo json_encode($result);
+
+    }
+
+
+
+    public function dataInsertContactoEmpresaJson()
+    {
+
+        $nombre= $this->input->post('nombre');
+        $correo= $this->input->post('correo');
+        $telefono= $this->input->post('telefono');
+        $depto= $this->input->post('depto');
+        $empresas_id= $this->input->post('empresas_id');
+
+        $value_insert =array(
+
+          'nombre'=>$nombre,
+          'correo'=>$correo,
+          'telefono'=>$telefono,
+          'depto'=>$depto,
+          'empresas_id'=>$empresas_id
+
+      );
+        $this->empresas_model->CreateContactoEmpresa($value_insert);
         $status = True;
         $result = array('statusR' => $status);
 

@@ -21,8 +21,14 @@ class Empresas_model extends CI_Model {
     public function EmpresaList()
     {
 
-        $result = $this->db->get('empresas');
-       // echo $this->db->last_query();
+        $this->db->select("*");
+        $this->db->select("empresas.id as empresasid");
+        $this->db->select("giro.nombre as giroempresa");
+        $this->db->from("empresas");
+        $this->db->join("giro", "empresas.giro_id = giro.id");
+        $this->db->join("clasificacion_empresa", "empresas.clasificacion_empresa_id = clasificacion_empresa.id");
+        $result = $this->db->get();
+        //echo $this->db->last_query();
         if ($result->num_rows()>0) {
             return $result->result();
         }else{
@@ -94,6 +100,14 @@ class Empresas_model extends CI_Model {
             return False;
         }
 
+    }
+
+    public function CreateContactoEmpresa($data)
+    {
+        $this->db->insert('contactos', $data);
+      //  echo $this->db->last_query();
+
+        return $this->db->insert_id();
     }
 
 

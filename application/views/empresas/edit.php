@@ -6,7 +6,7 @@ $this->load->view('header');
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>Alta Empresa</h3>
+                        <h3>Empresa</h3>
                     </div>
 
                 </div>
@@ -16,8 +16,14 @@ $this->load->view('header');
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
+                              <h2>Datos Empresa</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                      </ul>
 
                                 <div class="clearfix"></div>
+
                             </div>
                             <div class="x_content">
 
@@ -133,8 +139,33 @@ $this->load->view('header');
                                   </div>
                                 </form>
 
+
+
                             </div>
                         </div>
+
+
+                        <div class="x_panel">
+                            <div class="x_title">
+                              <h2>Datos Contactos</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                      </ul>
+
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="x_content">
+
+                                <a onclick="mContactoAgregar(<?php echo html_escape($GetIdEmpresa[0]->id) ?>)" style="cursor:pointer"> <input type="button" value="Agregar Contacto"> </a>
+
+
+
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -146,6 +177,51 @@ $this->load->view('header');
 </div>
 
 
+
+<!--Empresa Modal Agregar-->
+<div class="modal fade" id="mContanctoModal">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2>Agregar Contacto</h2>
+            </div>
+            <div class="modal-body form-horizontal form-label-left">
+
+              <div class="form-group " id="name">
+                  <label for="name">Nombre</label>
+                  <input id="mnombre" type="text" name="mnombre" class="optional form-control col-md-7 col-xs-12">
+              </div>
+
+              <div class="form-group " id="name">
+                  <label for="name">Correo</label>
+                  <input id="mcorreo" type="text" name="mcorreo" class="optional form-control col-md-7 col-xs-12">
+              </div>
+
+              <div class="form-group " id="name">
+                  <label for="name">Numero(s) de contacto</label>
+                  <input id="mtelefono" type="text" name="mtelefono" class="optional form-control col-md-7 col-xs-12">
+              </div>
+
+              <div class="form-group " id="name">
+                  <label for="name">Departamento</label>
+                  <input id="mdepto" type="text" name="mdepto" class="optional form-control col-md-7 col-xs-12">
+              </div>
+              <input type="hidden" id="midempresa" name="midempresa">
+
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="AgregarContactoModal();">Guardar</button>
+          </div>
+
+              </div>
+        </div>
+    </div>
+</div>
+
+
+
 <?php
 $this->load->view('footer');
 ?>
@@ -154,5 +230,51 @@ $this->load->view('footer');
 <!-- validator -->
 
 <script src="<?php echo base_url() ?>vendors/validator/validator.js"></script>
+<script src="<?php echo base_url() ?>vendors/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- autocomplete -->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+/*Agregar Empresa*/
+var mContactoAgregar = function(id) {
+ $('#mContanctoModal').modal('show');
+ $('#midempresa').val(id);
 
-<!-- /validator -->
+}
+
+
+var AgregarContactoModal = function() {
+var nombre = $('#mnombre').val();
+var correo = $('#mcorreo').val();
+var telefono = $('#mtelefono').val();
+var depto = $('#mdepto').val();
+var empresas_id = $('#midempresa').val();
+
+/*if ( nameEmpresa == "") {
+  alert("Favor de ingresa el nombre de la empresa");
+return false;
+}*/
+$.post("<?php echo base_url('empresa/dataInsertContactoEmpresaJson') ?>",{nombre:nombre,correo:correo,telefono:telefono,depto:depto,empresas_id:empresas_id},
+    function( data ) {
+        data = JSON.parse(data);
+        //console.log(data.statusR);
+        var status = data.statusR;
+        if (status == true) {
+            //se limpia el form
+             $('#mnombre').val();
+             $('#mcorreo').val();
+             $('#mtelefono').val();
+             $('#mdepto').val();
+             $('#midempresa').val();
+             $('#mContanctoModal').modal('toggle');
+            //$("form[name='FormRecord']").submit();
+            //location.reload();
+        }
+
+    }
+
+);
+
+}
+
+</script>
