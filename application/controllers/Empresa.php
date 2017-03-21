@@ -13,6 +13,9 @@ class Empresa extends CI_Controller {
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
 
         $this->load->model('empresas_model');
+        $this->load->model('giros_model');
+        $this->load->model('sectors_model');
+        $this->load->model('subsectors_model');
         $this->load->helper('form');
     }
 
@@ -23,6 +26,8 @@ class Empresa extends CI_Controller {
 
         $data = array(
             'title' => 'prueba',
+
+
 
         );
 
@@ -50,39 +55,83 @@ class Empresa extends CI_Controller {
 
     public function addView()
     {
-
+      $GirosList=$this->giros_model->GirosListForm();
+      $SubSectorList=$this->subsectors_model->SubSectorListsForm();
+      $SectorsList=$this->sectors_model->SectorsListForm();
+      $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
+      $EstadosList=$this->empresas_model->estadosList();
         $data = array(
             'title' => 'prueba',
+            'GirosList'=>$GirosList,
+            'SubSectorList'=>$SubSectorList,
+            'SectorsList'=>$SectorsList,
+            'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
+            'EstadosList'=>$EstadosList
 
         );
-        $this->parser->parse('empresas/new');
+        $this->parser->parse('empresas/new',$data);
 
     }
 
     public function dataInsert()
     {
 
-        $nombre           = $this->input->post('nombre');
-        $value_insert =array('nombre'=>$nombre);
-        $this->empresas_model->CreateEmpresa($value_insert);
-        redirect(base_url('giro'));
+        $nombre_empresa = $this->input->post('nombre_empresa');
+        $calle=$this->input->post('calle');
+        $num_inter=$this->input->post('num_inter');
+        $num_exter=$this->input->post('num_exter');
+        $cruzamiento=$this->input->post('cruzamiento');
+        $colonia=$this->input->post('colonia');
+        $cp=$this->input->post('cp');
+        $nombre_comercial=$this->input->post('nombre_comercial');
+        $nombre_razon_social=$this->input->post('nombre_razon_social');
+        $giro_id=$this->input->post('giro_id');
+        $clasificacion_empresa_id=$this->input->post('clasificacion_empresa_id');
+        $sector_id=$this->input->post('sector_id');
+        $subsector_id=$this->input->post('subsector_id');
+        $entidades_id=$this->input->post('entidades_id');
+        $value_insert =array(
+          'nombre_empresa'=>$nombre_empresa,
+          'calle'=>$calle,
+          'num_inter'=>$num_inter,
+          'num_exter'=>$num_exter,
+          'cruzamientos'=>$cruzamiento,
+          'colonia'=>$colonia,
+          'cp'=>$cp,
+          'nombre_comercial'=>$nombre_comercial,
+          'nombre_razon_social'=>$nombre_razon_social,
+          'giro_id'=>$giro_id,
+          'clasificacion_empresa_id'=>$clasificacion_empresa_id,
+          'sector_id'=>$sector_id,
+          'subsector_id'=>$subsector_id,
+          'entidades_id'=>$entidades_id,
+        );
+        $idreturn=$this->empresas_model->CreateEmpresa($value_insert);
+
+        redirect(base_url('empresa/editView/').$idreturn);
 
     }
 
 
     public function editView($id)
     {
-        $GetIdEmpresas=$this->empresas_model->GetIdEmpresa(array('id'=>$id));
 
+      $GetIdEmpresa=$this->empresas_model->GetIdEmpresa(array('id'=>$id));
+      $GirosList=$this->giros_model->GirosListForm();
+      $SubSectorList=$this->subsectors_model->SubSectorListsForm();
+      $SectorsList=$this->sectors_model->SectorsListForm();
+      $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
+      $EstadosList=$this->empresas_model->estadosList();
         $data = array(
             'title' => 'prueba',
-            'GetIdEmpresas'=> $GetIdEmpresas,
-
-
+            'GirosList'=>$GirosList,
+            'SubSectorList'=>$SubSectorList,
+            'SectorsList'=>$SectorsList,
+            'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
+            'EstadosList'=>$EstadosList,
+            'GetIdEmpresa'=>$GetIdEmpresa
 
         );
-
-       //print_r($tipo_usuario);
         $this->parser->parse('empresas/edit',$data);
 
     }
@@ -92,10 +141,37 @@ class Empresa extends CI_Controller {
     {
 
 
-      $nombre           = $this->input->post('nombre');
-      $status           = $this->input->post('status');
-      $value_update =array('nombre'=>$nombre,'status'=>$status);
-      $this->empresas_model-> UpdateEmpresa($value_update,array('id' => $id ));
+      $nombre_empresa = $this->input->post('nombre_empresa');
+      $calle=$this->input->post('calle');
+      $num_inter=$this->input->post('num_inter');
+      $num_exter=$this->input->post('num_exter');
+      $cruzamiento=$this->input->post('cruzamiento');
+      $colonia=$this->input->post('colonia');
+      $cp=$this->input->post('cp');
+      $nombre_comercial=$this->input->post('nombre_comercial');
+      $nombre_razon_social=$this->input->post('nombre_razon_social');
+      $giro_id=$this->input->post('giro_id');
+      $clasificacion_empresa_id=$this->input->post('clasificacion_empresa_id');
+      $sector_id=$this->input->post('sector_id');
+      $subsector_id=$this->input->post('subsector_id');
+      $entidades_id=$this->input->post('entidades_id');
+      $value_update =array(
+        'nombre_empresa'=>$nombre_empresa,
+        'calle'=>$calle,
+        'num_inter'=>$num_inter,
+        'num_exter'=>$num_exter,
+        'cruzamientos'=>$cruzamiento,
+        'colonia'=>$colonia,
+        'cp'=>$cp,
+        'nombre_comercial'=>$nombre_comercial,
+        'nombre_razon_social'=>$nombre_razon_social,
+        'giro_id'=>$giro_id,
+        'clasificacion_empresa_id'=>$clasificacion_empresa_id,
+        'sector_id'=>$sector_id,
+        'subsector_id'=>$subsector_id,
+        'entidades_id'=>$entidades_id,
+      );
+      $this->empresas_model->UpdateEmpresa($value_update,array('id' => $id ));
         //$this->parser->parse('welcome',$data);
         redirect(base_url('Empresa'));
 

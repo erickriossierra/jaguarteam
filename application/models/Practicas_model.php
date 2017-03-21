@@ -105,6 +105,25 @@ class Practicas_model extends CI_Model {
 
       }
 
+      public function ReportePracticasList()
+      {
+        $this->db->select("*");
+        $this->db->select("practicas_profesionales.id as practicasid");
+        $this->db->select("tipo_practica.Nombre as tipo_practica");
+        $this->db->select("empresas.id as empresasid");
+        $this->db->select("alumnos.nombre as nombrealumno");
+        $this->db->select("carreras.Nombre as carreranombre");
+        $this->db->from("practicas_profesionales");
+        $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id");
+        $this->db->join("empresas", "practicas_profesionales.empresas_id=empresas.id");
+        $this->db->join("alumnos", "practicas_profesionales.Alumnos_id=alumnos.id");
+        $this->db->join("carreras", "alumnos.carreras_id=carreras.id");
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+
+      }
+
 
 
 

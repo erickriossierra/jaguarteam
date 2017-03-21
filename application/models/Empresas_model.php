@@ -12,7 +12,7 @@ class Empresas_model extends CI_Model {
     public function CreateEmpresa($data)
     {
         $this->db->insert('empresas', $data);
-        //echo $this->db->last_query();
+        echo $this->db->last_query();
 
         return $this->db->insert_id();
     }
@@ -71,6 +71,30 @@ class Empresas_model extends CI_Model {
 
     }
 
+    public function clasificacionEmpresaList()
+    {
+
+        $result = $this->db->get('clasificacion_empresa');
+       // echo $this->db->last_query();
+        if ($result->num_rows()>0) {
+            return $result->result();
+        }else{
+            return False;
+        }
+
+    }
+    public function estadosList()
+    {
+
+        $result = $this->db->get('entidades');
+       // echo $this->db->last_query();
+        if ($result->num_rows()>0) {
+            return $result->result();
+        }else{
+            return False;
+        }
+
+    }
 
 
 

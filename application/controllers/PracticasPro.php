@@ -229,4 +229,27 @@ class PracticasPro extends CI_Controller {
 
     }
 
+    public function ReportePracticasListJSON(){
+      $HistorialPracticasList=$this->practicas_model->ReportePracticasList();
+      $data=array();
+        foreach ($HistorialPracticasList as $key) {
+            $data[]=array(
+            "id"=>$key->id,
+            "nombre"=>$key->nombrealumno. " ".$key->apellido_paterno. " ".$key->apellido_materno,
+            "empresas"=> $key->nombre_empresa,
+            "carrera"=> $key->carreranombre,
+            "representante"=> $key->representante,
+            "registroCP"=>$key->registroCP,
+            "practica_inicio"=>date_format_esp($key->practica_inicio),
+            "practica_fin"   =>date_format_esp($key->practica_fin)
+            );
+
+        }
+
+        echo '{"data": '.json_encode($data).'}';
+
+
+
+    }
+
 }

@@ -18,7 +18,7 @@ class SubSector extends CI_Controller {
 
 
 
-    public function index($id)
+    public function index()
     {
 
 
@@ -28,14 +28,21 @@ class SubSector extends CI_Controller {
     public function dataListJson($id){
       $SectorsList=$this->subsectors_model->GetIdSubSector(array('sector_id' =>$id));
       $data=array();
-        foreach ($SectorsList as $key) {
+      if($SectorsList==False)
+      {
+        $data[]=array(
+        "id"=>'',
+        "nombre"=>''
+        );
+      }else{
+          foreach ($SectorsList as $key) {
             $data[]=array(
             "id"=>$key->id,
             "nombre"=> $key->nombre
             );
 
         }
-
+  }
         echo '{"data": '.json_encode($data).'}';
 
 

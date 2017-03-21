@@ -1,11 +1,28 @@
 <?php
 $this->load->view('header');
 ?>
+<style>
+
+		#external_filter_container_wrapper {
+		  margin-bottom: 20px;
+		}
+
+		#external_filter_container {
+		  display: inline-block;
+		}
+
+    .yadcf-filter-wrapper {
+    float: left;
+  }
+
+	</style>
 
     <!-- Datatables -->
+    <link href="<?php echo base_url() ?>vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 <link href="<?php echo base_url() ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url() ?>vendors/yadcf/jquery.dataTables.yadcf.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo base_url() ?>vendors/yadcf/jquery-ui.1.9.0.css" rel="stylesheet" type="text/css" />
 <div class="right_col noheigthwidt" role="main" >
 
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -17,16 +34,17 @@ $this->load->view('header');
 
         </div>
         <div class="x_content">
-
-            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        
+            <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr id="filterrow">
-                    <th>Nombre</th>
-                    <th>Apellido Paterno</th>
-                    <th>Apellido Paterno</th>
+                    <th>Alumno</th>
+                    <th>Empresa</th>
                     <th>Carrera</th>
-                    <th>Editar Alumno</th>
-                    <th>Bitácora Practicas</th>
+                    <th>Representante</th>
+                    <th>Reg. CCPYA.E</th>
+                    <th>Inicio</th>
+                    <th>Termino</th>
                 </tr>
                 </thead>
 
@@ -45,6 +63,7 @@ $this->load->view('footer');
 
 
     <!-- Datatables -->
+      <script src="<?php echo base_url() ?>vendors/yadcf/jquery-ui.js"></script>
     <script src="<?php echo base_url() ?>vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url() ?>vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="<?php echo base_url() ?>vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -61,39 +80,65 @@ $this->load->view('footer');
     <script src="<?php echo base_url() ?>vendors/jszip/dist/jszip.min.js"></script>
     <script src="<?php echo base_url() ?>vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="<?php echo base_url() ?>vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="<?php echo base_url() ?>vendors/moment/min/moment.min.js"></script>
+    <script src="<?php echo base_url() ?>vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- autocomplete -->
+
     <!-- Datatables -->
     <script>
         $(document).ready(function() {
+
           var table = $('#datatable-responsive').DataTable({
                 processing: true,
+                scrollX: true,
                 ordering: false,
-                ajax: "<?php echo base_url('Alumnos/AlumnosCarrerasListJSON') ?>",
-                columns: [
+                ajax: "<?php echo base_url('PracticasPro/ReportePracticasListJSON') ?>",
+                dom: "Bfrtip",
+                buttons: [
+                             {
+                               extend: "copy",
+                               className: "btn-sm"
+                             },
+                             {
+                               extend: "csv",
+                               className: "btn-sm"
+                             },
+                             {
+                               extend: "excel",
+                               className: "btn-sm"
+                             },
+                             {
+                               extend: "pdfHtml5",
+                               className: "btn-sm"
+                             },
+                             {
+                               extend: "print",
+                               className: "btn-sm"
+                             },
+                           ],
+                aoColumns: [
                             { "data": "nombre" },
-                            { "data": "apellido_materno" },
-                            { "data": "apellido_paterno" },
+                            { "data": "empresas" },
                             { "data": "carrera" },
+                            { "data": "representante" },
+                            { "data": "registroCP" },
+                            { "data": "practica_inicio" },
+                            { "data": "practica_fin" },
 
-                        ],
-                columnDefs: [ {
-                           "targets": 4,
-                           "data": "id",
-                           "render": function ( data, type, full, meta ) {
-                             return '<a href="<?php echo base_url('alumnos/editView/') ?>'+data+'">Editar</a>';
-                            // return data== 1 ? '<button type="button" class="btn btn-primary">Activo</button>' : '<button type="button" class="btn btn-warning">Desactivado</button>';
-                                }
-                         },{
-                            "targets": 5,
-                            "data": "id",
-                            "render": function ( data, type, full, meta ) {
-                              return '<a href="<?php echo base_url('PracticasPro/bitacoraView/') ?>'+data+'">Ver</a>';
-                                 }
-                          } ]
+                        ]
 
 
             });
 
 
+            yadcf.init(table, [
+            {column_number: 5,filter_type: "range_date",date_format: "dd-mm-yyyy"},
+            {column_number: 6,filter_type: "range_date",date_format: "dd-mm-yyyy"}
+            ]);
+
+
         });
+
+
     </script>
     <!-- /Datatables -->

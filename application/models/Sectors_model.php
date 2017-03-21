@@ -17,6 +17,16 @@ class Sectors_model extends CI_Model {
 
     }
 
+    public function SectorsListForm()
+    {
+      $this->db->where(array('status'=>1));
+        $query=$this->db->get('sector');
+//echo $this->db->last_query();
+        return $query->result();
+
+    }
+
+
     public function CreateSectors($data)
     {
         $this->db->insert('sector', $data);

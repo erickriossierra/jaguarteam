@@ -16,6 +16,14 @@ class Giros_model extends CI_Model {
         return $query->result();
 
     }
+    public function GirosListForm()
+    {
+        $this->db->where(array('status'=>1));
+        $query=$this->db->get('giro');
+//echo $this->db->last_query();
+        return $query->result();
+
+    }
 
     public function CreateGiros($data)
     {

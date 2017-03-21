@@ -17,6 +17,15 @@ class Subsectors_model extends CI_Model {
 
     }
 
+    public function SubSectorListsForm()
+    {
+
+        $query=$this->db->get('subsector');
+        //echo $this->db->last_query();
+        return $query->result();
+
+    }
+
     public function CreateSubSector($data)
     {
         $this->db->insert('subsector', $data);
