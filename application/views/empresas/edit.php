@@ -1,6 +1,13 @@
 <?php
 $this->load->view('header');
 ?>
+<!-- Datatables -->
+<link href="<?php echo base_url() ?>vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="<?php echo base_url() ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo base_url() ?>vendors/yadcf/jquery.dataTables.yadcf.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url() ?>vendors/yadcf/jquery-ui.1.9.0.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url() ?>vendors/yadcf/select2.css" rel="stylesheet" type="text/css" />
         <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
@@ -158,9 +165,20 @@ $this->load->view('header');
                             </div>
                             <div class="x_content">
 
-                                <a onclick="mContactoAgregar(<?php echo html_escape($GetIdEmpresa[0]->id) ?>)" style="cursor:pointer"> <input type="button" value="Agregar Contacto"> </a>
 
+                                <a  onclick="mContactoAgregar(<?php echo html_escape($GetIdEmpresa[0]->id) ?>)"><button type="button" class="btn btn-success">Agregar Contacto</button></a>
+                                <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr id="filterrow">
+                                      <th>Nombre</th>
+                                      <th>Correo</th>
+                                      <th>Telefono</th>
+                                      <th>Depto.</th>
+                                      <th>Editar</th>
+                                    </tr>
+                                    </thead>
 
+                                </table>
 
                             </div>
                         </div>
@@ -215,6 +233,7 @@ $this->load->view('header');
               <button type="button" class="btn btn-primary" onclick="AgregarContactoModal();">Guardar</button>
           </div>
 
+
               </div>
         </div>
     </div>
@@ -227,13 +246,28 @@ $this->load->view('footer');
 ?>
 
 
-<!-- validator -->
+<!-- Datatables -->
+  <script src="<?php echo base_url() ?>vendors/yadcf/jquery-ui.js"></script>
+  <script src="<?php echo base_url() ?>vendors/yadcf/select2.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="<?php echo base_url() ?>vendors/yadcf/jquery.dataTables.yadcf.js"></script>
 
-<script src="<?php echo base_url() ?>vendors/validator/validator.js"></script>
+<script src="<?php echo base_url() ?>vendors/jszip/dist/jszip.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="<?php echo base_url() ?>vendors/pdfmake/build/vfs_fonts.js"></script>
 <script src="<?php echo base_url() ?>vendors/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url() ?>vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- autocomplete -->
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
 /*Agregar Empresa*/
 var mContactoAgregar = function(id) {
@@ -277,4 +311,36 @@ $.post("<?php echo base_url('empresa/dataInsertContactoEmpresaJson') ?>",{nombre
 
 }
 
+</script>
+
+<script>
+    $(document).ready(function() {
+
+      var table = $('#datatable-responsive').DataTable({
+            processing: true,
+            stateSave: true,
+            scrollX: true,
+            ordering: false,
+            ajax: "<?php echo base_url('empresa/dataListContactoEmpresaJson') ?>/<?php echo html_escape($GetIdEmpresa[0]->id) ?>",
+            columns: [
+                        { "data": "nombre_" },
+                        { "data": "correo"},
+                        { "data": "telefono"},
+                        { "data": "depto"},
+
+                    ],
+                    columnDefs: [ {
+                                "targets": 4,
+                                "data": "id",
+                                "render": function ( data, type, full, meta ) {
+
+                                  return data!="" ? '<a href="<?php echo base_url('empresa/editViewContactosEmpresa/') ?>'+data+'">Ver</a>' : ' ';
+                                     }
+                              } ]
+
+
+        });
+        setInterval( function () {table.ajax.reload();}, 10000 );
+
+    });
 </script>

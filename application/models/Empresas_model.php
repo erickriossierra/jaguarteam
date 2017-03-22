@@ -102,15 +102,42 @@ class Empresas_model extends CI_Model {
 
     }
 
-    public function CreateContactoEmpresa($data)
-    {
-        $this->db->insert('contactos', $data);
+  public function CreateContactoEmpresa($data)
+  {
+      $this->db->insert('contactos', $data);
       //  echo $this->db->last_query();
 
-        return $this->db->insert_id();
+      return $this->db->insert_id();
+  }
+
+
+
+
+  public function UpdateContactoEmpresa($data,$where)
+  {
+          $this->db->where($where);
+        $this->db->update('contactos', $data);
+         //echo $this->db->last_query();
+
+      }
+
+    public function ContactoByEmpresaList($data="")
+    {
+      $this->db->select("*");
+      $this->db->select("contactos.id as contactoid");
+      $this->db->from("contactos");
+      $this->db->join("empresas", "contactos.empresas_id= empresas.id ");
+      if($data!=''){
+      $this->db->where($data);
+      }
+      $result = $this->db->get();
+      //echo $this->db->last_query();
+      if ($result->num_rows()>0) {
+          return $result->result();
+      }else{
+          return False;
+      }
     }
-
-
 
 
 }

@@ -55,7 +55,7 @@ class Giro extends CI_Controller {
             'title' => 'prueba',
 
         );
-        $this->parser->parse('giros/new');
+        $this->parser->parse('giros/new',$data);
 
     }
 

@@ -55,7 +55,7 @@ class Sector extends CI_Controller {
             'title' => 'prueba',
 
         );
-        $this->parser->parse('sectors/new');
+        $this->parser->parse('sectors/new',$data);
 
     }
 

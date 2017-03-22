@@ -134,7 +134,7 @@ class PracticasPro extends CI_Controller {
 
 
 
-    /*Busqueda de Empresas*/
+    
     public function HistorialPracticasJson(){
       $id = $this->input->post('id');
       $HistorialPracticasList=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.id'=>$id));

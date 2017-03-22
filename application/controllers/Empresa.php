@@ -207,7 +207,7 @@ class Empresa extends CI_Controller {
     }
 
 
-
+    /*COntacto por empresas*/
     public function dataInsertContactoEmpresaJson()
     {
 
@@ -234,6 +234,123 @@ class Empresa extends CI_Controller {
        echo json_encode($result);
 
     }
+
+    public function dataListContactoEmpresaJson($id){
+      $ContactoByEmpresaList=$this->empresas_model->ContactoByEmpresaList(array("empresas_id"=>$id));
+      $data=array();
+      if($ContactoByEmpresaList==False){
+
+        $data[]=array(
+        "id"=>"",
+        "nombre_"=>"",
+        "correo"=>"",
+        "telefono"=>"",
+        "depto"=> ""
+        );
+
+      }else {
+
+        foreach ($ContactoByEmpresaList as $key) {
+            $data[]=array(
+            "id"=>$key->contactoid,
+            "nombre_"=>$key->nombre,
+            "correo"=>$key->correo,
+            "telefono"=>$key->telefono,
+            "depto"=> $key->depto,
+            "empresas_id"=>$key->empresas_id
+            );
+
+        }
+
+
+          }
+          echo '{"data": '.json_encode($data).'}';
+
+      }
+
+      public function ContactosListEmpresas()
+      {
+
+          $data = array(
+              'title' => 'prueba',
+          );
+          $this->parser->parse('empresas/list_contactos',$data);
+
+      }
+
+      public function ContactosListEmpresasJSON(){
+
+          $ContactoByEmpresaList=$this->empresas_model->ContactoByEmpresaList();
+          $data=array();
+          if($ContactoByEmpresaList==False){
+
+            $data[]=array(
+            "id"=>"",
+            "nombre_"=>"",
+            "correo"=>"",
+            "telefono"=>"",
+            "depto"=> ""
+            );
+
+          }else {
+
+            foreach ($ContactoByEmpresaList as $key) {
+                $data[]=array(
+                "id"=>$key->contactoid,
+                "nombre_"=>$key->nombre,
+                "correo"=>$key->correo,
+                "telefono"=>$key->telefono,
+                "depto"=> $key->depto,
+                "nombre_empresa"=>$key->nombre_empresa,
+                "nombre_comercial"=> $key->nombre_comercial,
+                "nombre_razon_social"=> $key->nombre_razon_social
+                );
+
+            }
+
+
+              }
+              echo '{"data": '.json_encode($data).'}';
+
+          }
+
+          public function editViewContactosEmpresa($id){
+
+              $ContactoByEmpresaList=$this->empresas_model->ContactoByEmpresaList(array("contactos.id"=>$id));
+              $data = array(
+                  'title' => 'prueba',
+                  'ContactoByEmpresaList'=>$ContactoByEmpresaList,
+
+
+              );
+              $this->parser->parse('empresas/editContactosEmpresa',$data);
+
+          }
+
+          public function dataUpdateContactoByEmpresa($id){
+
+            $nombre= $this->input->post('mnombre');
+            $correo= $this->input->post('mcorreo');
+            $telefono= $this->input->post('mtelefono');
+            $depto= $this->input->post('mdepto');
+            $midempresa=$this->input->post('midempresa');
+
+
+            $value_insert =array(
+
+              'nombre'=>$nombre,
+              'correo'=>$correo,
+              'telefono'=>$telefono,
+              'depto'=>$depto,
+
+          );
+            $this->empresas_model->UpdateContactoEmpresa($value_insert,array('id' => $id ));
+
+              //$this->parser->parse('welcome',$data);
+              redirect(base_url('empresa/editView/').$midempresa);
+
+          }
+
 
 
 }

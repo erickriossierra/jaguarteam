@@ -56,6 +56,7 @@
                             <li><a href="<?php echo base_url() ?>user"><i class="fa fa-user-plus" aria-hidden="true"></i></i>Usuarios</span></a> </li>
                             <hr>
                             <li><a href="<?php echo base_url() ?>Empresa"><i class="fa fa-users" aria-hidden="true"></i>Empresas</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>Empresa/ContactosListEmpresas"><i class="fa fa-users" aria-hidden="true"></i>Contacto Por Empresas</span></a> </li>
                             <li><a href="<?php echo base_url() ?>giro"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Giros Empresa</span></a> </li>
                             <li><a href="<?php echo base_url() ?>sector"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Sector</span></a> </li>
                             <?php //} ?>
