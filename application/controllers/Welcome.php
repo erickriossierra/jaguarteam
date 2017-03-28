@@ -31,17 +31,22 @@ class Welcome extends CI_Controller {
             if ($login_user) {
                 $array = array(
                     'idtypeUserS' => $login_user["tipo_usuario_id"],
-                    'nameS' => $login_user["nombre"],
-                    'apellidoP' => $login_user["apellido_p"],
-                    'apellidoM' => $login_user["apellido_m"],
-
+                    'nameS' => $login_user["nombre"] . " " . $login_user["apellido_p"]. " " .$login_user["apellido_m"],
                 );
+
 
                 $this->session->set_userdata( $array );
 
+                if($login_user["tipo_usuario_id"]==1){
                 redirect(base_url('user'));
+                }elseif($login_user["tipo_usuario_id"]==2){
+                  redirect(base_url('PracticasPro'));
+                }else{
+                  redirect(base_url('Empresa'));
+                }
+
             }else{
-              
+
                 $tipomsg = 1;
                 $msg= "Usuario o contraseña incorrecta";
             }

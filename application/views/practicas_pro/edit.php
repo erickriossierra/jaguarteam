@@ -28,7 +28,7 @@ $this->load->view('header');
                                       <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select name="tipo_practica" id="tipo_practica" class="form-control" >
                                         <?php foreach ($TipoPracticasList as $key): ?>
-                                            <option   value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
+                                            <option <?php if (html_escape($GetIdPracticas[0]->tipo_practica_id)==  $key->id )echo 'selected';?>  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
 
                                         <?php endforeach ?>
                                       </select>
@@ -36,25 +36,38 @@ $this->load->view('header');
                                   </div>
 
                                   <h2>Datos Empresa</h2>
+                                 <div class="empresa">
                                   <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Empresa</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text"  value="<?php echo html_escape($GetIdPracticas[0]->nombre_empresa) ?>">
+                                          <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text"  value="<?php echo html_escape($GetIdPracticas[0]->nombre_comercial) ?>">
                                           <input type="hidden" name="idEmpresa" id="idEmpresa" value="<?php echo html_escape($GetIdPracticas[0]->empresasid) ?>" >
                                       </div>
                                   </div>
+
+                                </div>
+                                <div class="despacho">
                                   <div class="item form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
+                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Despacho</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text" value="<?php echo html_escape($GetIdPracticas[0]->representante) ?>">
+                                          <input id="despacho" class="form-control col-md-7 col-xs-12" name="despacho" type="text" value="<?php echo html_escape($GetIdPracticas[0]->empresasnombre) ?>" >
+                                          <input type="hidden" name="idDespacho" id="idDespacho" value="<?php echo html_escape($GetIdPracticas[0]->despachosid) ?>" >
+
                                       </div>
                                   </div>
                                   <div class="item form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Registro Colegio de Contadores</label>
+                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Colegio de Profesionista al que pertence</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text" value="<?php echo html_escape($GetIdPracticas[0]->registroCP) ?>">
+                                          <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text" value="<?php echo html_escape($GetIdPracticas[0]->colegio) ?>" >
                                       </div>
                                   </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text" value="<?php echo html_escape($GetIdPracticas[0]->representante) ?>">
+                                    </div>
+                                </div>
                                   <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_inicio">Practica Inicio</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
@@ -68,9 +81,24 @@ $this->load->view('header');
                                       </div>
                                   </div>
                                   <div class="item form-group">
+                                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_fin">Apoyo Económico</label>
+                                      <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="apoyo_economico" id="apoyo_economico" class="form-control" >
+                                        <option  value="1">Si</option>
+                                        <option  value="0">No</option>
+
+                                      </select>
+                                      </div>
+                                  </div>
+                                  <div class="item form-group">
                                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="constancia">Contrato</label>
                                       <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <input id="constancia" class="form-control col-md-7 col-xs-12" name="constancia" type="text" value="<?php echo html_escape($GetIdPracticas[0]->constancia) ?>">
+                                        <select name="estatus_id" id="estatus_id" class="form-control" >
+                                        <?php foreach ($EstatusPracticasList as $key): ?>
+                                            <option <?php if (html_escape($GetIdPracticas[0]->estatus_id)==  $key->id )echo 'selected';?>  value="<?php echo $key->id ?>"><?php echo $key->estatus ?></option>
+
+                                        <?php endforeach ?>
+                                      </select>
                                       </div>
                                   </div>
                                   <div class="item form-group">
@@ -119,7 +147,7 @@ $this->load->view('footer');
             minLength: 0,
             source: '<?php echo base_url() ?>PracticasPro/BuscarEmpresa',
             select: function( event, ui ) {
-                $( "#empresa" ).val( ui.item.nombre_empresa );
+                $( "#empresa" ).val( ui.item.nombre_comercial );
                 $( "#idEmpresa" ).val( ui.item.id );
                 return false;
             }
@@ -127,9 +155,28 @@ $this->load->view('footer');
             .autocomplete( "instance" )._renderItem = function( ul, item ) {
             return $( "<li>" )
             //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
-                .append( "<div>" + item.nombre_empresa + "</div>" )
+                .append( "<div>" + item.nombre_comercial + "</div>" )
                 .appendTo( ul );
                  };
+
+
+                 /*Empresa*/
+                 $( "#despacho" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
+                      select: function( event, ui ) {
+                          $( "#despacho" ).val( ui.item.nombre);
+                          $( "#idDespacho" ).val( ui.item.id );
+                          $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
 
         /*Habilitar Registro*/
 
@@ -152,3 +199,54 @@ $this->load->view('footer');
      });
    </script>
 <!-- /validator -->
+<script>
+$(".empresa").hide();
+$(".despacho").hide();
+$("#tipo_practica").change(function() {
+
+var tipo_practica = $(this).val();
+if (tipo_practica == "1") {
+  $(".empresa").show();
+  $(".despacho").hide();
+  $( "#idDespacho" ).val('');
+  $("#registrocp").val('');
+  $( "#empresa" ).val('');
+}
+else if (tipo_practica == "2") {
+  $(".empresa").hide();
+  $(".despacho").show();
+  $( "#idEmpresa" ).val('');
+    $("#despacho" ).val('');
+
+}
+if (tipo_practica == "3") {
+   $(".empresa").show();
+   $(".despacho").hide();
+   $( "#idDespacho" ).val('');
+   $("#registrocp").val('');
+   $( "#empresa" ).val('');
+ }
+
+});
+
+
+
+var tipo_practica_inicio = '<?php echo html_escape($GetIdPracticas[0]->tipo_practica_id )?>';
+console.log(tipo_practica_inicio);
+if (tipo_practica_inicio == "1") {
+  $(".empresa").show();
+  $(".despacho").hide();
+
+}
+else if (tipo_practica_inicio == "2") {
+  $(".empresa").hide();
+  $(".despacho").show();
+
+}
+if (tipo_practica_inicio == "3") {
+   $(".empresa").show();
+   $(".despacho").hide();
+
+ }
+
+</script>

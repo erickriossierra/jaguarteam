@@ -83,11 +83,11 @@ $this->load->view('header');
                                           <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                               <thead>
                                               <tr id="filterrow">
-                                                  <th>Empresa</th>
+                                                  <th>Empresa / Despacho</th>
                                                   <th>Tipo de Practica</th>
                                                   <th>Fecha Inicio</th>
                                                   <th>Fecha Fin</th>
-                                                  <th>Ver</th>
+                                                  <th>Estatus</th>
                                                   <th>Editar</th>
                                               </tr>
                                               </thead>
@@ -95,12 +95,12 @@ $this->load->view('header');
                                                 <?php foreach ($HistorialPracticasList as $row){ ?>
                                                 <tr>
 
-                                                    <td><?php echo html_escape($row->nombre_empresa)?></td>
+                                                    <td><?php echo (html_escape($row->nombre_comercial)!=NULL) ?  html_escape($row->nombre_comercial):  html_escape($row->empresasnombre) ?></td>
                                                     <td><?php echo html_escape($row->tipo_practica)?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_inicio))?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_fin))?></td>
 
-                                                    <td><label style="cursor:pointer" onclick="mPracticaView(<?php echo html_escape($row->practicasid) ?>)">Ver</label></td>
+                                                    <td><?php echo html_escape($row->estatus)?></td>
                                                     <td><a href="<?php echo base_url('PracticasPro/editView/')?><?php echo html_escape($row->practicasid) ?>">Edit</a></td>
 
                                                 </tr>
@@ -128,6 +128,7 @@ $this->load->view('header');
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo_practica">Tipo practica</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                           <select name="tipo_practica" id="tipo_practica" class="form-control" >
+                                            <option  value="0"></option>
                                           <?php foreach ($TipoPracticasList as $key): ?>
                                               <option  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
 
@@ -137,6 +138,7 @@ $this->load->view('header');
                                     </div>
 
                                     <h2>Datos Empresa</h2>
+                                    <div class="empresa">
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Empresa</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -150,18 +152,30 @@ $this->load->view('header');
                                           <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
                                         </div>
                                     </div>
+                                  </div>
+                                  <div class="despacho">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Despacho</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="despacho" class="form-control col-md-7 col-xs-12" name="despacho" type="text">
+                                            <input type="hidden" name="idDespacho" id="idDespacho">
+
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Colegio de Profesionista al que pertence</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text">
+                                        </div>
+                                    </div>
+                                  </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text">
                                         </div>
                                     </div>
-                                    <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Registro Colegio de Contadores</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text">
-                                        </div>
-                                    </div>
+
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_inicio">Practica Inicio</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -175,9 +189,13 @@ $this->load->view('header');
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="constancia">Contrato</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_fin">Apoyo Económico</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="constancia" class="form-control col-md-7 col-xs-12" name="constancia" type="text">
+                                          <select name="apoyo_economico" id="apoyo_economico" class="form-control" >
+                                          <option  value="1">Si</option>
+                                          <option  value="0">No</option>
+
+                                        </select>
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -333,7 +351,7 @@ $this->load->view('footer');
             minLength: 0,
             source: '<?php echo base_url() ?>PracticasPro/BuscarEmpresa',
             select: function( event, ui ) {
-                $( "#empresa" ).val( ui.item.nombre_empresa );
+                $( "#empresa" ).val( ui.item.nombre_comercial );
                 $( "#idEmpresa" ).val( ui.item.id );
                 return false;
             }
@@ -341,9 +359,29 @@ $this->load->view('footer');
             .autocomplete( "instance" )._renderItem = function( ul, item ) {
             return $( "<li>" )
             //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
-                .append( "<div>" + item.nombre_empresa + "</div>" )
+                .append( "<div>" + item.nombre_comercial + "</div>" )
                 .appendTo( ul );
                  };
+
+
+                 /*Empresa*/
+                 $( "#despacho" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
+                      select: function( event, ui ) {
+                          $( "#despacho" ).val( ui.item.nombre);
+                          $( "#idDespacho" ).val( ui.item.id );
+                          $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+
 
         /*Habilitar Registro*/
 
@@ -376,7 +414,7 @@ $this->load->view('footer');
                function( data ) {
                    data = JSON.parse(data);
                    //console.log(data[0].nombre_empresa);
-                       $('#mempresa').val(data[0].nombre_empresa);
+                       $('#mempresa').val(data[0].nombre_comercial);
                        $('#mtipo_practica').val(data[0].tipo_practica);
                        $('#mrepresentante').val(data[0].representante);
                        $('#mregistrocp').val(data[0].registroCP);
@@ -402,7 +440,7 @@ $this->load->view('footer');
          alert("Favor de ingresa el nombre de la empresa");
       return false;
       }
-       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_empresa:nameEmpresa},
+       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_comercial:nameEmpresa},
            function( data ) {
                data = JSON.parse(data);
                //console.log(data.statusR);
@@ -420,4 +458,31 @@ $this->load->view('footer');
        );
 
    }
+   </script>
+   <script>
+   $(".empresa").hide();
+   $(".despacho").hide();
+   $("#tipo_practica").change(function() {
+
+   var tipo_practica = $(this).val();
+  if (tipo_practica == "1") {
+     $(".empresa").show();
+     $(".despacho").hide();
+     $( "#idDespacho" ).val('');
+     $("#registrocp").val( '');
+   }
+   else if (tipo_practica == "2") {
+     $(".empresa").hide();
+     $(".despacho").show();
+     $( "#idEmpresa" ).val('');
+   }
+   if (tipo_practica == "3") {
+      $(".empresa").show();
+      $(".despacho").hide();
+      $( "#idDespacho" ).val('');
+      $("#registrocp").val('');
+    }
+
+  });
+
    </script>

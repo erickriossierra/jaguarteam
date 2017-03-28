@@ -14,6 +14,7 @@ class PracticasPro extends CI_Controller {
 
         $this->load->model('practicas_model');
         $this->load->model('empresas_model');
+        $this->load->model('despachos_model');
         $this->load->model('alumnos_model');
         $this->load->helper('form');
         $this->load->helper('aux_helper');
@@ -61,15 +62,16 @@ class PracticasPro extends CI_Controller {
         /*Insertar tabla Practicas*/
         $tipo_practica_id = $this->input->post('tipo_practica');
         $empresas_id = $this->input->post('idEmpresa');
+        $despacho_id = $this->input->post('idDespacho');
         $representante= $this->input->post('representante');
         $registrocp= $this->input->post('registrocp');
         $practica_inicio= date_format_db($this->input->post('practica_inicio'));
 
         $practica_fin= date_format_db($this->input->post('practica_fin'));
-        $constancia= $this->input->post('constancia');
+        $apoyo_economico=$this->input->post('apoyo_economico');
         $info= $this->input->post('info');
 
-        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
+        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'despacho_id'=>$despacho_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'apoyo_economico'=>$apoyo_economico,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
         $this->practicas_model->CreatePracticas($value_insert_practica);
 
         redirect(base_url('PracticasPro'));
@@ -81,10 +83,12 @@ class PracticasPro extends CI_Controller {
     {
         $GetIdPracticas=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.id'=>$id));
           $TipoPracticasList=$this->practicas_model->TipoPracticasList();
+          $EstatusPracticasList=$this->practicas_model->EstatusPracticasList();
         $data = array(
             'title' => 'prueba',
             'GetIdPracticas'=> $GetIdPracticas,
-            'TipoPracticasList'=>$TipoPracticasList
+            'TipoPracticasList'=>$TipoPracticasList,
+            'EstatusPracticasList'=>$EstatusPracticasList
         );
 
        //print_r($tipo_usuario);
@@ -117,15 +121,17 @@ class PracticasPro extends CI_Controller {
         /*Insertar tabla Practicas*/
         $tipo_practica_id = $this->input->post('tipo_practica');
         $empresas_id = $this->input->post('idEmpresa');
+        $despacho_id = $this->input->post('idDespacho');
         $representante= $this->input->post('representante');
         $registrocp= $this->input->post('registrocp');
         $practica_inicio= date_format_db($this->input->post('practica_inicio'));
 
         $practica_fin= date_format_db($this->input->post('practica_fin'));
+        $apoyo_economico=$this->input->post('apoyo_economico');
         $constancia= $this->input->post('constancia');
         $info= $this->input->post('info');
 
-        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
+        $value_insert_practica =array('tipo_practica_id'=>$tipo_practica_id,'despacho_id'=>$despacho_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'apoyo_economico'=>$apoyo_economico,'constancia'=>$constancia,'info'=>$info,'Alumnos_id'=>$Alumnos_id);
         $this->practicas_model->CreatePracticas($value_insert_practica);
 
         redirect(base_url('PracticasPro/bitacoraView/'.$id));
@@ -134,14 +140,14 @@ class PracticasPro extends CI_Controller {
 
 
 
-    
+
     public function HistorialPracticasJson(){
       $id = $this->input->post('id');
       $HistorialPracticasList=$this->practicas_model->HistorialPracticasList(array('practicas_profesionales.id'=>$id));
        $data=array();
        foreach ($HistorialPracticasList as $key) {
            $data[]=array(
-           "nombre_empresa"   => $key->nombre_empresa,
+           "nombre_comercial"   => $key->nombre_comercial,
            "tipo_practica"    => $key->tipo_practica,
            "representante"    => $key->representante,
            "registroCP"       =>$key->registroCP,
@@ -168,10 +174,11 @@ class PracticasPro extends CI_Controller {
       $practica_inicio= date_format_db($this->input->post('practica_inicio'));
 
       $practica_fin= date_format_db($this->input->post('practica_fin'));
-      $constancia= $this->input->post('constancia');
+      $apoyo_economico= $this->input->post('apoyo_economico');
+      $estatus_id= $this->input->post('estatus_id');
       $info= $this->input->post('info');
 
-      $value_update =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'constancia'=>$constancia,'info'=>$info);
+      $value_update =array('tipo_practica_id'=>$tipo_practica_id,'empresas_id'=>$empresas_id,'representante'=>$representante,'registroCP'=>$registrocp,'practica_inicio'=>$practica_inicio,'practica_fin'=>$practica_fin,'apoyo_economico'=>$apoyo_economico,'estatus_id'=>$estatus_id,'info'=>$info);
       $this->practicas_model-> UpdatePracticas($value_update,array('id' => $id ));
 
 
@@ -197,20 +204,20 @@ class PracticasPro extends CI_Controller {
       $searchTerm = $this->input->get('term');
 
 
-       $search=$this->empresas_model->GetBuscarEmpresa(array('nombre_empresa'=>$searchTerm));
+       $search=$this->empresas_model->GetBuscarEmpresa(array('nombre_comercial'=>$searchTerm));
 
        $data=array();
        if ($search==FALSE)
        {
          $data[]=array(
          "id"=>'0',
-         "nombre_empresa"   => 'No existe',
+         "nombre_comercial"   => 'No existe',
          );
        }else{
        foreach ($search as $key) {
            $data[]=array(
            "id"=>$key->id,
-           "nombre_empresa"   => $key->nombre_empresa,
+           "nombre_comercial"   => $key->nombre_comercial,
            );
 
        }
@@ -233,15 +240,24 @@ class PracticasPro extends CI_Controller {
       $HistorialPracticasList=$this->practicas_model->ReportePracticasList();
       $data=array();
         foreach ($HistorialPracticasList as $key) {
+
+          if($key->nombre_comercial==NULL){
+            $val= $key->empresasnombre;
+          }else {
+              $val= $key->nombre_comercial;
+          }
+
             $data[]=array(
             "id"=>$key->id,
             "nombre"=>$key->nombrealumno. " ".$key->apellido_paterno. " ".$key->apellido_materno,
-            "empresas"=> $key->nombre_empresa,
+            "lugar"=> $val,
+            "tipo_practica"=>$key->tipo_practica,
             "carrera"=> $key->carreranombre,
             "representante"=> $key->representante,
-            "registroCP"=>$key->registroCP,
+            "registroCP"=>$key->colegio,
             "practica_inicio"=>date_format_esp($key->practica_inicio),
-            "practica_fin"   =>date_format_esp($key->practica_fin)
+            "practica_fin"=>date_format_esp($key->practica_fin),
+            "estatus"=>$key->estatus,
             );
 
         }
@@ -250,6 +266,35 @@ class PracticasPro extends CI_Controller {
 
 
 
+    }
+
+
+
+    public function BuscarDespacho(){
+      $searchTerm = $this->input->get('term');
+
+
+       $search=$this->despachos_model->GetBuscarDespacho(array('nombre'=>$searchTerm));
+
+       $data=array();
+       if ($search==FALSE)
+       {
+         $data[]=array(
+         "id"=>'0',
+         "nombre"   => 'No existe',
+         "colegio"=>''
+         );
+       }else{
+       foreach ($search as $key) {
+           $data[]=array(
+           "id"=>$key->id,
+           "nombre"   => $key->nombre,
+           "colegio"=>$key->colegio
+           );
+
+       }
+      }
+       echo json_encode($data);
     }
 
 }

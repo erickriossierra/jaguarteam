@@ -36,7 +36,6 @@ $this->load->view('header');
                   <th>Correo</th>
                   <th>Telefono</th>
                   <th>Depto.</th>
-                  <th>Nombre empresa</th>
                   <th>Nombre comercial</th>
                   <th>Nombre razon_social</th>
 
@@ -89,24 +88,28 @@ $this->load->view('footer');
                 scrollX: true,
                 ordering: false,
                 ajax: "<?php echo base_url('empresa/ContactosListEmpresasJSON') ?>",
+                dom: "Bfrtip",
+                buttons: [
+
+                  {
+                    extend: "csv",
+                    className: "btn-sm"
+                  },
+                  {
+                    extend: "excel",
+                    className: "btn-sm"
+                  },
+                  
+                           ],
                 columns: [
                             { "data": "nombre_" },
                             { "data": "correo"},
                             { "data": "telefono"},
                             { "data": "depto"},
-                            { "data": "nombre_empresa" },
                             { "data": "nombre_comercial" },
                             { "data": "nombre_razon_social" },
 
-                        ]/*,
-                columnDefs: [ {
-                            "targets": 11,
-                            "name": "nombre_empresa",
-                            "data": "id",
-                            "render": function ( data, type, full, meta ) {
-                              return '<a href="<?php echo base_url('empresa/editView/') ?>'+data+'">Ver</a>';
-                                 }
-                          } ]*/
+                        ]
 
 
             });
@@ -114,7 +117,7 @@ $this->load->view('footer');
 
                         yadcf.init(table, [
                         {column_number: 1,filter_type: "multi_select",select_type: 'select2'},
-                        {column_number: 2,filter_type: "multi_select",select_type: 'select2'},
+                        {column_number: 2,filter_type: "text"},
                         {column_number: 0,filter_type: "text"},
                         {column_number: 3,filter_type: "text"},
                         {column_number: 4,filter_type: "text"}

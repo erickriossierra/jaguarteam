@@ -30,7 +30,8 @@ $this->load->view('header');
             <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr id="filterrow">
-                  <th>Nombre empresa</th>
+                  <th>Nombre comercial</th>
+                  <th>Nombre razon_social</th>
                   <th>Clasificacion empresa</th>
                   <th>Giro</th>
                   <th>Calle</th>
@@ -39,8 +40,6 @@ $this->load->view('header');
                   <th>Cruzamientos</th>
                   <th>Colonia</th>
                   <th>Cp</th>
-                  <th>Nombre comercial</th>
-                  <th>Nombre razon_social</th>
                   <th>Ver</th>
                 </tr>
                 </thead>
@@ -90,8 +89,23 @@ $this->load->view('footer');
                 scrollX: true,
                 ordering: false,
                 ajax: "<?php echo base_url('empresa/dataListJson') ?>",
+                dom: "Bfrtip",
+                buttons: [
+
+                             {
+                               extend: "csv",
+                               className: "btn-sm"
+                             },
+                             {
+                               extend: "excel",
+                               className: "btn-sm"
+                             },
+                             
+
+                           ],
                 columns: [
-                            { "data": "nombre_empresa" },
+                            { "data": "nombre_comercial" },
+                            { "data": "nombre_razon_social" },
                             { "data": "clasificacion_empresa"},
                             { "data": "giroempresa"},
                             { "data": "calle" },
@@ -99,14 +113,12 @@ $this->load->view('footer');
                             { "data": "num_exter" },
                             { "data": "cruzamiento" },
                             { "data": "colonia" },
-                            { "data": "cp" },
-                            { "data": "nombre_comercial" },
-                            { "data": "nombre_razon_social" },
+                            { "data": "cp" }
+
 
                         ],
                 columnDefs: [ {
-                            "targets": 11,
-                            "name": "nombre_empresa",
+                            "targets": 10,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
                               return '<a href="<?php echo base_url('empresa/editView/') ?>'+data+'">Ver</a>';
@@ -119,10 +131,10 @@ $this->load->view('footer');
 
                         yadcf.init(table, [
                         {column_number: 1,filter_type: "multi_select",select_type: 'select2'},
-                        {column_number: 2,filter_type: "multi_select",select_type: 'select2'},
                         {column_number: 0,filter_type: "text"},
+                        {column_number: 2,filter_type: "multi_select",select_type: 'select2'},
                         {column_number: 9,filter_type: "text"},
-                        {column_number: 10,filter_type: "text"}
+                        {column_number: 8,filter_type: "multi_select",select_type: 'select2'}
                         ]);
 
         });

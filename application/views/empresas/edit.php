@@ -39,10 +39,16 @@ $this->load->view('header');
 
 
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre Empresa
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Comercial
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <input id="nombre_empresa" class="form-control col-md-7 col-xs-12"  name="nombre_empresa" type="text" value="<?php echo $GetIdEmpresa[0]->nombre_empresa?>">
+                                      <input type="nombre_comercial" id="nombre_comercial" name="nombre_comercial" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_comercial?>">
+                                    </div>
+                                  </div>
+                                  <div class="item form-group">
+                                    <label for="nombre_razon_social" class="control-label col-md-3">Razón Social</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                      <input id="nombre_razon_social" type="input" name="nombre_razon_social" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_razon_social?>">
                                     </div>
                                   </div>
                                   <div class="item form-group">
@@ -53,7 +59,12 @@ $this->load->view('header');
                                       <input type="text" id="num_inter" name="num_inter" class="form-control col-md-7 col-xs-12" placeholder="num interior" value="<?php echo $GetIdEmpresa[0]->num_inter?>">
                                       <input type="text" id="num_exter" name="num_exter" class="form-control col-md-7 col-xs-12" placeholder="num exterior" value="<?php echo $GetIdEmpresa[0]->num_exter?>">
                                       <input type="text" id="cruzamiento" name="cruzamiento" class="form-control col-md-7 col-xs-12" placeholder="cruzamientos" value="<?php echo $GetIdEmpresa[0]->cruzamientos?>">
-                                      <input type="text" id="colonia" name="colonia" class="form-control col-md-7 col-xs-12" placeholder="colonia" value="<?php echo $GetIdEmpresa[0]->colonia?>">
+                                      <select name="colonia" id="" class="form-control" >
+                                      <?php foreach ($ColoniasList as $key): ?>
+                                          <option <?php if($GetIdEmpresa[0]->colonia_id==$key->id) echo 'selected'?> value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
+
+                                      <?php endforeach ?>
+                                    </select>
                                     </div>
                                   </div>
                                   <div class="item form-group">
@@ -61,19 +72,6 @@ $this->load->view('header');
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" id="CP" name="cp" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->cp?>">
-                                    </div>
-                                  </div>
-                                  <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Comercial
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <input type="nombre_comercial" id="nombre_comercial" name="nombre_comercial" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_comercial?>">
-                                    </div>
-                                  </div>
-                                  <div class="item form-group">
-                                    <label for="nombre_razon_social" class="control-label col-md-3">Nombre Fiscal</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <input id="nombre_razon_social" type="input" name="nombre_razon_social" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_razon_social?>">
                                     </div>
                                   </div>
                                   <div class="item form-group">

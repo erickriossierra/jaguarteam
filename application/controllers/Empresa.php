@@ -16,6 +16,7 @@ class Empresa extends CI_Controller {
         $this->load->model('giros_model');
         $this->load->model('sectors_model');
         $this->load->model('subsectors_model');
+        $this->load->model('colonias_model');
         $this->load->helper('form');
     }
 
@@ -34,10 +35,26 @@ class Empresa extends CI_Controller {
     public function dataListJson(){
       $EmpresasList=$this->empresas_model->EmpresaList();
       $data=array();
+      if($EmpresasList==NULL){
+
+        $data[]=array(
+        "id"=>'',
+        "clasificacion_empresa"=>'',
+        "giroempresa"=>'',
+        "calle"=> '',
+        "num_inter"=> '',
+        "num_exter"=> '',
+        "cruzamiento"=> '',
+        "colonia"=> '',
+        "cp"=> '',
+        "nombre_comercial"=> '',
+        "nombre_razon_social"=> '',
+        );
+
+      }else{
         foreach ($EmpresasList as $key) {
             $data[]=array(
             "id"=>$key->empresasid,
-            "nombre_empresa"=>$key->nombre_empresa,
             "clasificacion_empresa"=>$key->clasificacion,
             "giroempresa"=>$key->giroempresa,
             "calle"=> $key->calle,
@@ -50,8 +67,8 @@ class Empresa extends CI_Controller {
             "nombre_razon_social"=> $key->nombre_razon_social,
             );
 
+          }
         }
-
         echo '{"data": '.json_encode($data).'}';
 
 
@@ -61,6 +78,7 @@ class Empresa extends CI_Controller {
     public function addView()
     {
       $GirosList=$this->giros_model->GirosListForm();
+      $ColoniasList=$this->colonias_model->ColoniasList();
       $SubSectorList=$this->subsectors_model->SubSectorListsForm();
       $SectorsList=$this->sectors_model->SectorsListForm();
       $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
@@ -70,6 +88,7 @@ class Empresa extends CI_Controller {
             'GirosList'=>$GirosList,
             'SubSectorList'=>$SubSectorList,
             'SectorsList'=>$SectorsList,
+            'ColoniasList'=>$ColoniasList,
             'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
             'EstadosList'=>$EstadosList
 
@@ -81,7 +100,6 @@ class Empresa extends CI_Controller {
     public function dataInsert()
     {
 
-        $nombre_empresa = $this->input->post('nombre_empresa');
         $calle=$this->input->post('calle');
         $num_inter=$this->input->post('num_inter');
         $num_exter=$this->input->post('num_exter');
@@ -96,12 +114,11 @@ class Empresa extends CI_Controller {
         $subsector_id=$this->input->post('subsector_id');
         $entidades_id=$this->input->post('entidades_id');
         $value_insert =array(
-          'nombre_empresa'=>$nombre_empresa,
           'calle'=>$calle,
           'num_inter'=>$num_inter,
           'num_exter'=>$num_exter,
           'cruzamientos'=>$cruzamiento,
-          'colonia'=>$colonia,
+          'colonia_id'=>$colonia,
           'cp'=>$cp,
           'nombre_comercial'=>$nombre_comercial,
           'nombre_razon_social'=>$nombre_razon_social,
@@ -127,11 +144,13 @@ class Empresa extends CI_Controller {
       $SectorsList=$this->sectors_model->SectorsListForm();
       $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
       $EstadosList=$this->empresas_model->estadosList();
+      $ColoniasList=$this->colonias_model->ColoniasList();
         $data = array(
             'title' => 'prueba',
             'GirosList'=>$GirosList,
             'SubSectorList'=>$SubSectorList,
             'SectorsList'=>$SectorsList,
+            'ColoniasList'=>$ColoniasList,
             'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
             'EstadosList'=>$EstadosList,
             'GetIdEmpresa'=>$GetIdEmpresa
@@ -146,7 +165,6 @@ class Empresa extends CI_Controller {
     {
 
 
-      $nombre_empresa = $this->input->post('nombre_empresa');
       $calle=$this->input->post('calle');
       $num_inter=$this->input->post('num_inter');
       $num_exter=$this->input->post('num_exter');
@@ -161,12 +179,11 @@ class Empresa extends CI_Controller {
       $subsector_id=$this->input->post('subsector_id');
       $entidades_id=$this->input->post('entidades_id');
       $value_update =array(
-        'nombre_empresa'=>$nombre_empresa,
         'calle'=>$calle,
         'num_inter'=>$num_inter,
         'num_exter'=>$num_exter,
         'cruzamientos'=>$cruzamiento,
-        'colonia'=>$colonia,
+        'colonia_id'=>$colonia,
         'cp'=>$cp,
         'nombre_comercial'=>$nombre_comercial,
         'nombre_razon_social'=>$nombre_razon_social,
@@ -195,8 +212,8 @@ class Empresa extends CI_Controller {
     public function dataInsertJson()
     {
 
-        $nombre           = $this->input->post('nombre_empresa');
-        $value_insert =array('nombre_empresa'=>$nombre);
+        $nombre           = $this->input->post('nombre_comercial');
+        $value_insert =array('nombre_comercial'=>$nombre);
         $this->empresas_model->CreateEmpresa($value_insert);
         $status = True;
         $result = array('statusR' => $status);
@@ -289,7 +306,9 @@ class Empresa extends CI_Controller {
             "nombre_"=>"",
             "correo"=>"",
             "telefono"=>"",
-            "depto"=> ""
+            "depto"=> "",
+            "nombre_comercial"=> "",
+            "nombre_razon_social"=> ""
             );
 
           }else {
@@ -301,7 +320,6 @@ class Empresa extends CI_Controller {
                 "correo"=>$key->correo,
                 "telefono"=>$key->telefono,
                 "depto"=> $key->depto,
-                "nombre_empresa"=>$key->nombre_empresa,
                 "nombre_comercial"=> $key->nombre_comercial,
                 "nombre_razon_social"=> $key->nombre_razon_social
                 );
@@ -348,6 +366,17 @@ class Empresa extends CI_Controller {
 
               //$this->parser->parse('welcome',$data);
               redirect(base_url('empresa/editView/').$midempresa);
+
+          }
+
+
+          public function dataDeleteModalContact(){
+              $id = $this->input->post('id');
+              //echo $id; exit;
+              $this->empresas_model->DeleteEmpresasContact(array('id'=>$id));
+              $status = True;
+              $result = array('statusR' => $status);
+              echo json_encode($result);
 
           }
 

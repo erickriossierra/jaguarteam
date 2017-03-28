@@ -66,6 +66,7 @@ $this->load->view('header');
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo_practica">Tipo practica</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                           <select name="tipo_practica" id="tipo_practica" class="form-control" >
+                                          <option  value="0"></option>
                                           <?php foreach ($TipoPracticasList as $key): ?>
                                               <option  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
 
@@ -75,10 +76,11 @@ $this->load->view('header');
                                     </div>
 
                                     <h2>Datos Empresa</h2>
+                                    <div class="empresa">
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Empresa</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text">
+                                            <input id="empresa" class="form-control col-md-7 col-xs-12" name="empresa" type="text">
                                             <input type="hidden" name="idEmpresa" id="idEmpresa">
 
                                         </div>
@@ -89,18 +91,30 @@ $this->load->view('header');
                                           <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
                                         </div>
                                     </div>
+                                  </div>
+                                  <div class="despacho">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Despacho</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="despacho" class="form-control col-md-7 col-xs-12" name="despacho" type="text">
+                                            <input type="hidden" name="idDespacho" id="idDespacho">
+
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Colegio de Profesionista al que pertence</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text">
+                                        </div>
+                                    </div>
+                                  </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text">
                                         </div>
                                     </div>
-                                    <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="registrocp">Registro Colegio de Contadores</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="registrocp" class="form-control col-md-7 col-xs-12" name="registrocp" type="text">
-                                        </div>
-                                    </div>
+
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_inicio">Practica Inicio</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -113,12 +127,18 @@ $this->load->view('header');
                                             <input id="practica_fin" class="form-control col-md-7 col-xs-12" name="practica_fin" type="text">
                                         </div>
                                     </div>
+
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="constancia">Contrato</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_fin">Apoyo Económico</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="constancia" class="form-control col-md-7 col-xs-12" name="constancia" type="text">
+                                          <select name="apoyo_economico" id="apoyo_economico" class="form-control" >
+                                          <option  value="1">Si</option>
+                                          <option  value="0">No</option>
+
+                                        </select>
                                         </div>
                                     </div>
+
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="info">Información</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -197,7 +217,7 @@ $this->load->view('footer');
             minLength: 0,
             source: '<?php echo base_url() ?>PracticasPro/BuscarEmpresa',
             select: function( event, ui ) {
-                $( "#empresa" ).val( ui.item.nombre_empresa );
+                $( "#empresa" ).val( ui.item.nombre_comercial );
                 $( "#idEmpresa" ).val( ui.item.id );
                 return false;
             }
@@ -205,9 +225,30 @@ $this->load->view('footer');
             .autocomplete( "instance" )._renderItem = function( ul, item ) {
             return $( "<li>" )
             //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
-                .append( "<div>" + item.nombre_empresa + "</div>" )
+                .append( "<div>" + item.nombre_comercial + "</div>" )
                 .appendTo( ul );
                  };
+
+
+                 /*Empresa*/
+                 $( "#despacho" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
+                      select: function( event, ui ) {
+                          $( "#despacho" ).val( ui.item.nombre);
+                          $( "#idDespacho" ).val( ui.item.id );
+                          $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+
+
 
         /*Habilitar Registro*/
 
@@ -243,7 +284,7 @@ $this->load->view('footer');
          alert("Favor de ingresa el nombre de la empresa");
       return false;
       }
-       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_empresa:nameEmpresa},
+       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_comercial:nameEmpresa},
            function( data ) {
                data = JSON.parse(data);
                //console.log(data.statusR);
@@ -261,4 +302,32 @@ $this->load->view('footer');
        );
 
    }
+   </script>
+
+   <script>
+   $(".empresa").hide();
+   $(".despacho").hide();
+   $("#tipo_practica").change(function() {
+
+   var tipo_practica = $(this).val();
+  if (tipo_practica == "1") {
+     $(".empresa").show();
+     $(".despacho").hide();
+     $( "#idDespacho" ).val('');
+     $("#registrocp").val('');
+   }
+   else if (tipo_practica == "2") {
+     $(".empresa").hide();
+     $(".despacho").show();
+     $( "#idEmpresa" ).val('');
+   }
+   if (tipo_practica == "3") {
+      $(".empresa").show();
+      $(".despacho").hide();
+      $( "#idDespacho" ).val('');
+      $("#registrocp").val('');
+    }
+
+ });
+
    </script>

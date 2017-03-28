@@ -28,9 +28,6 @@ $this->load->view('header');
                             </div>
                             <div class="x_content">
 
-
-
-
                                   <div class="modal-body form-horizontal form-label-left">
 
                                     <div class="form-group " id="name">
@@ -56,8 +53,13 @@ $this->load->view('header');
 
                                 </div>
 
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-3">
+                                      <a href="<?php echo base_url('empresa/editView') ?>/<?php echo html_escape($ContactoByEmpresaList[0]->id)?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+
+                                        <button id="send" type="submit" class="btn btn-success">Guardar</button>
+                                         <button type="button" name="button"  onclick="mConfirmacion(<?php echo html_escape($ContactoByEmpresaList[0]->contactoid)?>)"  class="btn btn-danger">Eliminar</button>
+                                    </div>
                                 </div>
 
 
@@ -78,9 +80,68 @@ $this->load->view('header');
 </div>
 
 
+<!---modal eliminar--->
 
+
+<div class="modal fade" id="mConfirmacion">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Eliminar</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="form-group " id="alamr">
+                    <label for="comment">¿Esta seguro de Eliminar al Contacto?</label>
+
+                </div>
+
+
+            <input type="hidden" value="" id="idContactom" name="idContactom">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="DeleteModal();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <?php
 $this->load->view('footer');
 ?>
+<script>
+//modal mAlarms
+   var mConfirmacion = function(id) {
+
+       $('#mConfirmacion').modal('show');
+       $('#idContactom').val(id);
+
+   }
+
+
+   var DeleteModal = function() {
+       var id = $('#idContactom').val();
+       var link = '<?php echo base_url('empresa/editView'); ?>/<?php echo html_escape($ContactoByEmpresaList[0]->id)?>';
+
+       $.post("<?php echo base_url('empresa/dataDeleteModalContact') ?>",{ id:id},
+           function( data ) {
+               data = JSON.parse(data);
+               //console.log(data.statusR);
+               var status = data.statusR;
+               if (status == true) {
+                   window.location.replace(link);
+
+
+               }
+
+           }
+
+       );
+
+   }
+
+
+</script>

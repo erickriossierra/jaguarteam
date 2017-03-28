@@ -12,7 +12,7 @@ class Empresas_model extends CI_Model {
     public function CreateEmpresa($data)
     {
         $this->db->insert('empresas', $data);
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
 
         return $this->db->insert_id();
     }
@@ -24,8 +24,10 @@ class Empresas_model extends CI_Model {
         $this->db->select("*");
         $this->db->select("empresas.id as empresasid");
         $this->db->select("giro.nombre as giroempresa");
+        $this->db->select("colonias.nombre as colonia");
         $this->db->from("empresas");
         $this->db->join("giro", "empresas.giro_id = giro.id");
+        $this->db->join("colonias", "empresas.colonia_id = colonias.id");
         $this->db->join("clasificacion_empresa", "empresas.clasificacion_empresa_id = clasificacion_empresa.id");
         $result = $this->db->get();
         //echo $this->db->last_query();
@@ -137,6 +139,13 @@ class Empresas_model extends CI_Model {
       }else{
           return False;
       }
+    }
+
+    public function DeleteEmpresasContact($id){
+
+      $this->db->where($id);
+      $this->db->delete('contactos');
+
     }
 
 

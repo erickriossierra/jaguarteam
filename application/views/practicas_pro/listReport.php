@@ -34,17 +34,19 @@ $this->load->view('header');
 
         </div>
         <div class="x_content">
-        
+
             <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr id="filterrow">
                     <th>Alumno</th>
-                    <th>Empresa</th>
+                    <th>Tipo Practica </th>
                     <th>Carrera</th>
+										<th>Empresa / Despacho / Dependencia </th>
                     <th>Representante</th>
                     <th>Reg. CCPYA.E</th>
                     <th>Inicio</th>
                     <th>Termino</th>
+										<th>Estatus</th>
                 </tr>
                 </thead>
 
@@ -95,35 +97,27 @@ $this->load->view('footer');
                 ajax: "<?php echo base_url('PracticasPro/ReportePracticasListJSON') ?>",
                 dom: "Bfrtip",
                 buttons: [
-                             {
-                               extend: "copy",
-                               className: "btn-sm"
-                             },
-                             {
-                               extend: "csv",
-                               className: "btn-sm"
-                             },
-                             {
-                               extend: "excel",
-                               className: "btn-sm"
-                             },
-                             {
-                               extend: "pdfHtml5",
-                               className: "btn-sm"
-                             },
-                             {
-                               extend: "print",
-                               className: "btn-sm"
-                             },
+
+									{
+										extend: "csv",
+										className: "btn-sm"
+									},
+									{
+										extend: "excel",
+										className: "btn-sm"
+									},
+
                            ],
                 aoColumns: [
                             { "data": "nombre" },
-                            { "data": "empresas" },
-                            { "data": "carrera" },
-                            { "data": "representante" },
+                            { "data": "tipo_practica"},
+														{ "data": "carrera" },
+														{	"data":	"lugar"},
+													  { "data": "representante" },
                             { "data": "registroCP" },
                             { "data": "practica_inicio" },
                             { "data": "practica_fin" },
+														{ "data": "estatus" },
 
                         ]
 
@@ -132,8 +126,12 @@ $this->load->view('footer');
 
 
             yadcf.init(table, [
-            {column_number: 5,filter_type: "range_date",date_format: "dd-mm-yyyy"},
-            {column_number: 6,filter_type: "range_date",date_format: "dd-mm-yyyy"}
+						{column_number: 1,filter_type: "text"},
+						{column_number: 2,filter_type: "select"},
+						{column_number: 3,filter_type: "text"},
+            {column_number: 6,filter_type: "range_date",date_format: "dd-mm-yyyy"},
+            {column_number: 7,filter_type: "range_date",date_format: "dd-mm-yyyy"},
+						{column_number: 8,filter_type: "select"}
             ]);
 
 

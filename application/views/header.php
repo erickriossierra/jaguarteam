@@ -19,6 +19,8 @@
     <link href="<?php echo base_url() ?>vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="<?php echo base_url() ?>assets/css/custom.min.css" rel="stylesheet">
+
+    <link href="<?php echo base_url() ?>assets/css/jquery-ui.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -52,17 +54,24 @@
                         <h3>General</h3>
                         <ul class="nav side-menu">
 
-                            <?php //if ($this->idtypeUser_session==1){ ?>
+                          <?php if ($this->idtypeUser_session==1){ ?>
                             <li><a href="<?php echo base_url() ?>user"><i class="fa fa-user-plus" aria-hidden="true"></i></i>Usuarios</span></a> </li>
+
                             <hr>
+                          <?php } ?>
+                            <?php if ($this->idtypeUser_session==3 OR $this->idtypeUser_session==1){ ?>
                             <li><a href="<?php echo base_url() ?>Empresa"><i class="fa fa-users" aria-hidden="true"></i>Empresas</span></a> </li>
                             <li><a href="<?php echo base_url() ?>Empresa/ContactosListEmpresas"><i class="fa fa-users" aria-hidden="true"></i>Contacto Por Empresas</span></a> </li>
                             <li><a href="<?php echo base_url() ?>giro"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Giros Empresa</span></a> </li>
                             <li><a href="<?php echo base_url() ?>sector"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Sector</span></a> </li>
-                            <?php //} ?>
+                            <li><a href="<?php echo base_url() ?>colonia"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Colonias</span></a> </li>
                             <hr>
+                            <?php } ?>
+                            <?php if ($this->idtypeUser_session==2 OR $this->idtypeUser_session==1){ ?>
                             <li><a href="<?php echo base_url() ?>PracticasPro"><i class="fa fa-users" aria-hidden="true"></i>Practicas Profesionales</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>Despacho"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Despachos</span></a> </li>
                             <li><a href="<?php echo base_url() ?>PracticasPro/Reporte"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Reporte</span></a> </li>
+                            <?php } ?>
 
 
 
