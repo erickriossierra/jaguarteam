@@ -32,7 +32,7 @@ $this->load->view('header');
 
                                     <div class="form-group " id="name">
                                         <label for="name">Nombre</label>
-                                        <input id="mnombre" type="text" name="mnombre" class="optional form-control col-md-7 col-xs-12" value="<?php echo html_escape($ContactoByEmpresaList[0]->nombre) ?>">
+                                        <input id="mnombre" type="text" name="mnombre" class="optional form-control col-md-7 col-xs-12" value="<?php echo html_escape($ContactoByEmpresaList[0]->nombrecont) ?>">
                                     </div>
 
                                     <div class="form-group " id="name">
@@ -49,13 +49,13 @@ $this->load->view('header');
                                         <label for="name">Departamento</label>
                                         <input id="mdepto" type="text" name="mdepto" class="optional form-control col-md-7 col-xs-12" value="<?php echo html_escape($ContactoByEmpresaList[0]->depto) ?>">
                                     </div>
-                                    <input type="hidden" id="midempresa" name="midempresa" value="<?php echo html_escape($ContactoByEmpresaList[0]->id)?>">
+                                    <input type="hidden" id="midempresa" name="midempresa" value="<?php echo html_escape($ContactoByEmpresaList[0]->idemp)?>">
 
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-3">
-                                      <a href="<?php echo base_url('empresa/editView') ?>/<?php echo html_escape($ContactoByEmpresaList[0]->id)?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+                                      <a href="<?php echo base_url('empresa/editView') ?>/<?php echo html_escape($ContactoByEmpresaList[0]->idemp)?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
 
                                         <button id="send" type="submit" class="btn btn-success">Guardar</button>
                                          <button type="button" name="button"  onclick="mConfirmacion(<?php echo html_escape($ContactoByEmpresaList[0]->contactoid)?>)"  class="btn btn-danger">Eliminar</button>
@@ -124,7 +124,7 @@ $this->load->view('footer');
 
    var DeleteModal = function() {
        var id = $('#idContactom').val();
-       var link = '<?php echo base_url('empresa/editView'); ?>/<?php echo html_escape($ContactoByEmpresaList[0]->id)?>';
+       var link = '<?php echo base_url('empresa/editView'); ?>/<?php echo html_escape($ContactoByEmpresaList[0]->idemp)?>';
 
        $.post("<?php echo base_url('empresa/dataDeleteModalContact') ?>",{ id:id},
            function( data ) {

@@ -31,32 +31,34 @@ $this->load->view('header');
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre">Nombre</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" type="text">
+                                            <input type="hidden" name="id_alumno" id="id_alumno">
                                         </div>
                                     </div>
 
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Apellido Paterno</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="apellido_paterno" class="form-control col-md-7 col-xs-12" name="apellido_paterno" type="text">
+                                            <input id="apellido_paterno" class="form-control col-md-7 col-xs-12" name="apellido_paterno" type="text" disabled="false" >
                                         </div>
                                     </div>
 
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Apellido Materno</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="apellido_materno" class="form-control col-md-7 col-xs-12" name="apellido_materno" type="text">
+                                            <input id="apellido_materno" class="form-control col-md-7 col-xs-12" name="apellido_materno" type="text" disabled="false">
                                         </div>
                                     </div>
 
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="apellido">Carrera</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <select name="carrera" id="carrera" class="form-control" >
+                                          <select name="carrera" id="carrera" class="form-control" disabled="false">
                                           <?php foreach ($TipoCarrerasList as $key): ?>
                                               <option  value="<?php echo $key->id ?>"><?php echo $key->Nombre ?></option>
 
                                           <?php endforeach ?>
                                         </select>
+                                        <input type="hidden" name="id_carrera" id="id_carrera">
                                         </div>
                                     </div>
 
@@ -88,7 +90,7 @@ $this->load->view('header');
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
+                                       
                                         </div>
                                     </div>
                                   </div>
@@ -108,10 +110,28 @@ $this->load->view('header');
                                         </div>
                                     </div>
                                   </div>
+                                  <div class="dependencia">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Dependencia</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="dependencia" class="form-control col-md-7 col-xs-12" name="dependencia" type="text">
+                                            <input type="hidden" name="idDepedencia" id="idDepedencia">
+
+                                        </div>
+                                    </div>
+                                    
+                                  </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Jefe directo</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="jefe" class="form-control col-md-7 col-xs-12" name="jefe" type="text">
                                         </div>
                                     </div>
 
@@ -149,8 +169,11 @@ $this->load->view('header');
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-6 col-md-offset-3">
-                                          <a href="<?php echo base_url('PracticasPro') ?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+                                          <a href="<?php echo base_url('Solicitudes/index/')?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
                                             <button id="send" type="submit" class="btn btn-success">Guardar</button>
+
+                                            <a href="<?php echo base_url('Solicitudes/visualizar') ?>" target="_blank"><button class="btn btn-success" >Vizualizar</button></a>
+                      
                                         </div>
                                     </div>
 
@@ -162,7 +185,6 @@ $this->load->view('header');
         </div>
         <!-- /page content -->
 
-
     </div>
 </div>
 
@@ -170,36 +192,6 @@ $this->load->view('header');
 <?php
 $this->load->view('footer');
 ?>
-
-
-
-<!--Empresa Modal Agregar-->
-<div class="modal fade" id="mEmpresaAgregarModal">
-    <div class="modal-dialog">
-        <div class="modal-content col-md-12 col-sm-12 col-xs-12">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2>Agregar Empresa</h2>
-            </div>
-            <div class="modal-body form-horizontal form-label-left">
-
-              <div class="form-group " id="name">
-                  <label for="name">Nombre Empresa</label>
-                  <input id="nameEmpresa" type="text" name="nameEmpresa" class="optional form-control col-md-7 col-xs-12" required="required">
-              </div>
-
-
-          </div>
-
-          <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onclick="AgregarEmpresaModal();">Guardar</button>
-          </div>
-
-              </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- validator -->
 
@@ -211,6 +203,27 @@ $this->load->view('footer');
 
 <script>
      $(document).ready(function() {
+
+      /*Dependencia*/
+       $( "#nombre" ).autocomplete({
+            minLength: 0,
+            source: '<?php echo base_url() ?>PracticasPro/BuscarAlumno',
+            select: function( event, ui ) {
+
+                $( "#nombre" ).val( ui.item.nombre);
+                $( "#id_alumno" ).val( ui.item.id );
+                $( "#apellido_paterno" ).val( ui.item.apellido_paterno);
+                $( "#apellido_materno" ).val( ui.item.apellido_materno );
+                $( "#carrera" ).val( ui.item.id_carrera );
+                $( "#id_carrera" ).val( ui.item.id_carrera );
+                return false;
+            }
+        })
+            .autocomplete( "instance" )._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<div>" + item.nombre_cp + "</div>" )
+                .appendTo( ul );
+                 };
 
        /*Empresa*/
        $( "#empresa" ).autocomplete({
@@ -230,7 +243,7 @@ $this->load->view('footer');
                  };
 
 
-                 /*Empresa*/
+                 /*Despacho*/
                  $( "#despacho" ).autocomplete({
                       minLength: 0,
                       source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
@@ -238,6 +251,23 @@ $this->load->view('footer');
                           $( "#despacho" ).val( ui.item.nombre);
                           $( "#idDespacho" ).val( ui.item.id );
                           $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+              /*Dependencia*/
+                 $( "#dependencia" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDependencia',
+                      select: function( event, ui ) {
+                          $( "#dependencia" ).val( ui.item.nombre);
+                          $( "#idDepedencia" ).val( ui.item.id );
+                        //  $("#registrocp").val( ui.item.colegio);
                           return false;
                       }
                   })
@@ -270,62 +300,32 @@ $this->load->view('footer');
 
      });
    </script>
-   <script>
-       /*Agregar Empresa*/
-       var mEmpresaAgregar = function() {
-        $('#mEmpresaAgregarModal').modal('show');
-    }
-
-
-    var AgregarEmpresaModal = function() {
-       var nameEmpresa = $('#nameEmpresa').val();
-
-       if ( nameEmpresa == "") {
-         alert("Favor de ingresa el nombre de la empresa");
-      return false;
-      }
-       $.post("<?php echo base_url('empresa/dataInsertJson') ?>",{nombre_comercial:nameEmpresa},
-           function( data ) {
-               data = JSON.parse(data);
-               //console.log(data.statusR);
-               var status = data.statusR;
-               if (status == true) {
-                   //se limpia el form
-                    $('#nameEmpresa').val('');
-                    $('#mEmpresaAgregarModal').modal('toggle');
-                   //$("form[name='FormRecord']").submit();
-                   //location.reload();
-               }
-
-           }
-
-       );
-
-   }
-   </script>
 
    <script>
    $(".empresa").hide();
    $(".despacho").hide();
+   $(".dependencia").hide();
    $("#tipo_practica").change(function() {
 
    var tipo_practica = $(this).val();
   if (tipo_practica == "1") {
-     $(".empresa").show();
+     $(".empresa").hide();
      $(".despacho").hide();
+     $(".dependencia").show();
      $( "#idDespacho" ).val('');
      $("#registrocp").val('');
    }
    else if (tipo_practica == "2") {
      $(".empresa").hide();
      $(".despacho").show();
+     $(".dependencia").hide();
      $( "#idEmpresa" ).val('');
    }
    if (tipo_practica == "3") {
       $(".empresa").show();
       $(".despacho").hide();
-      $( "#idDespacho" ).val('');
-      $("#registrocp").val('');
+      $(".dependencia").hide();
+      $( "#idDepedencia" ).val('');
     }
 
  });

@@ -23,7 +23,7 @@ $this->load->view('header');
                 <tr id="filterrow">
                     <th>Nombre</th>
                     <th>Apellido Paterno</th>
-                    <th>Apellido Paterno</th>
+                    <th>Apellido Matenro</th>
                     <th>Carrera</th>
                     <th>Editar Alumno</th>
                     <th>Bitácora Practicas</th>

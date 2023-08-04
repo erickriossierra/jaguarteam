@@ -24,6 +24,7 @@ $this->load->view('header');
 
                     <th>Despacho</th>
                     <th>Colegio al que pertenece</th>
+                    <th>Colonia</th>
                     <th>Editar</th>
               </tr>
                 </thead>
@@ -69,10 +70,11 @@ $this->load->view('footer');
                 columns: [
                             { "data": "nombre" },
                             { "data": "colegio" },
+                            { "data": "colonia" },
 
                         ],
                 columnDefs: [ {
-                            "targets": 2,
+                            "targets": 3,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
                               return '<a href="<?php echo base_url('Despacho/editView/') ?>'+data+'">Editar</a>';

@@ -64,4 +64,20 @@ class Colonias_model extends CI_Model {
         }
     }
 
+public function GetBuscarColonia($data)
+    {
+      
+     $this->db->select('*');
+     $this->db->from("colonias");
+      $this->db->like($data);
+      $result = $this->db->get();
+      //echo $this->db->last_query();
+      if ($result->num_rows()>0) {
+          return $result->result();
+      }else{
+          return False;
+      }
+
+    }
+
 }

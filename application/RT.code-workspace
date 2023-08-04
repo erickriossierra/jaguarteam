@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "views"
+		},
+		{
+			"path": "controllers"
+		},
+		{
+			"path": "models"
+		}
+	],
+	"settings": {}
+}

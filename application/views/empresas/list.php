@@ -32,8 +32,8 @@ $this->load->view('header');
                 <tr id="filterrow">
                   <th>Nombre comercial</th>
                   <th>Nombre razon_social</th>
+                 <!-- <th>Giro</th> -->
                   <th>Clasificacion empresa</th>
-                  <th>Giro</th>
                   <th>Calle</th>
                   <th>Num. inter</th>
                   <th>Num.exter</th>
@@ -106,8 +106,8 @@ $this->load->view('footer');
                 columns: [
                             { "data": "nombre_comercial" },
                             { "data": "nombre_razon_social" },
-                            { "data": "clasificacion_empresa"},
-                            { "data": "giroempresa"},
+                            //{ "data": "giroempresa"},
+                            { "data": "clasificacion_empresa"},                            
                             { "data": "calle" },
                             { "data": "num_inter" },
                             { "data": "num_exter" },
@@ -117,8 +117,9 @@ $this->load->view('footer');
 
 
                         ],
+ 
                 columnDefs: [ {
-                            "targets": 10,
+                            "targets": 9,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
                               return '<a href="<?php echo base_url('empresa/editView/') ?>'+data+'">Ver</a>';
@@ -130,11 +131,11 @@ $this->load->view('footer');
 
 
                         yadcf.init(table, [
-                        {column_number: 1,filter_type: "multi_select",select_type: 'select2'},
+                        {column_number: 1,filter_type: "text"},
                         {column_number: 0,filter_type: "text"},
                         {column_number: 2,filter_type: "multi_select",select_type: 'select2'},
-                        {column_number: 9,filter_type: "text"},
-                        {column_number: 8,filter_type: "multi_select",select_type: 'select2'}
+                        {column_number: 8,filter_type: "multi_select",select_type: 'select2'},
+                        {column_number: 7,filter_type: "multi_select",select_type: 'select2'}
                         ]);
 
         });

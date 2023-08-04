@@ -97,12 +97,15 @@ class Practicas_model extends CI_Model {
         $this->db->select("empresas.id as empresasid");
         $this->db->select("despachos.id as despachosid");
         $this->db->select("despachos.nombre as empresasnombre");
+        $this->db->select("dependencias.id as dependenciaid");
+        $this->db->select("dependencias.nombre as dependencianombre");
 
         $this->db->from("practicas_profesionales");
-        $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id");
+        $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id", "left");
         $this->db->join("empresas", "practicas_profesionales.empresas_id=empresas.id","left");
         $this->db->join("despachos", "practicas_profesionales.despacho_id=despachos.id","left");
-        $this->db->join("estatus_practicas", "practicas_profesionales.estatus_id=estatus_practicas.id");
+        $this->db->join("dependencias", "practicas_profesionales.dependencia_id=dependencias.id","left");
+        $this->db->join("estatus_practicas", "practicas_profesionales.estatus_id=estatus_practicas.id", "left");
         $this->db->where($id);
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -117,13 +120,16 @@ class Practicas_model extends CI_Model {
         $this->db->select("tipo_practica.Nombre as tipo_practica");
         $this->db->select("empresas.id as empresasid");
         $this->db->select("despachos.id as despachosid");
+        $this->db->select("dependencias.id as dependenciaid");
         $this->db->select("despachos.nombre as empresasnombre");
+        $this->db->select("dependencias.Nombre as dependencianombre");
         $this->db->select("alumnos.nombre as nombrealumno");
         $this->db->select("carreras.Nombre as carreranombre");
         $this->db->from("practicas_profesionales");
         $this->db->join("tipo_practica", "practicas_profesionales.tipo_practica_id=tipo_practica.id");
         $this->db->join("empresas", "practicas_profesionales.empresas_id=empresas.id","left");
         $this->db->join("despachos", "practicas_profesionales.despacho_id=despachos.id","left");
+        $this->db->join("dependencias", "practicas_profesionales.dependencia_id=dependencias.id","left");
         $this->db->join("estatus_practicas", "practicas_profesionales.estatus_id=estatus_practicas.id");
         $this->db->join("alumnos", "practicas_profesionales.Alumnos_id=alumnos.id");
         $this->db->join("carreras", "alumnos.carreras_id=carreras.id");

@@ -59,23 +59,20 @@ class Users_model extends CI_Model {
     }
 
 
-    public function Login($usuario='',$password)
+    public function Login($usuario='',$password='')
     {
         $this->db->where('usuario', $usuario);
         $this->db->where('password', md5($password));
         $get_user = $this->db->get('usuarios');
-        //echo $this->db->last_query();
+        echo $this->db->last_query();
 
         if ($get_user->num_rows()==1 ) {
 
             $rows = $get_user->row();
 
-
-
-
             if($rows->status==1){
 
-                return  array('nombre'=>$rows->nombre,'apellido_p'=>$rows->apellido_p,'apellido_m'=>$rows->apellido_m,'tipo_usuario_id'=>$rows->tipo_usuario_id);
+                return  array('nombre'=>$rows->nombre,'apellido_p'=>$rows->apellido_p,'apellido_m'=>$rows->apellido_m,'tipo_usuario_id'=>$rows->tipo_usuario_id, 'id'=>$rows->id, 'usuario'=>$rows->usuario);
             }else{
 
                 return False;

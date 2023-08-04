@@ -34,7 +34,7 @@ $this->load->view('header');
                             </div>
                             <div class="x_content">
 
-                                <form class="form-horizontal form-label-left" novalidate action="<?php echo base_url() ?>empresa/dataUpdate/<?php echo html_escape($GetIdEmpresa[0]->id) ?>" method="post" accept-charset="utf-8">
+                                <form class="form-horizontal form-label-left" novalidate action="<?php echo base_url() ?>empresa/dataUpdate/<?php echo html_escape($GetIdEmpresa[0]->idemp) ?>" method="post" accept-charset="utf-8">
 
 
 
@@ -48,7 +48,14 @@ $this->load->view('header');
                                   <div class="item form-group">
                                     <label for="nombre_razon_social" class="control-label col-md-3">Razón Social</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <input id="nombre_razon_social" type="input" name="nombre_razon_social" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_razon_social?>">
+                                      <input id="nombre_razon_social" type="input" name="nombre_razon_social" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->nombre_razon_social?>" >
+                                       <select name="giro_id" id="" class="form-control" onchange="mostrarValor(this)">
+                                      <?php foreach ($GirosList as $key): ?>
+                                          <option <?php if($GetIdEmpresa[0]->giro_id==$key->id) echo 'selected'?> value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
+
+                                      <?php endforeach ?>
+                                    </select>
+                                     <input id="giro" type="hidden" name="giro" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->giro?>">
                                     </div>
                                   </div>
                                   <div class="item form-group">
@@ -59,32 +66,24 @@ $this->load->view('header');
                                       <input type="text" id="num_inter" name="num_inter" class="form-control col-md-7 col-xs-12" placeholder="num interior" value="<?php echo $GetIdEmpresa[0]->num_inter?>">
                                       <input type="text" id="num_exter" name="num_exter" class="form-control col-md-7 col-xs-12" placeholder="num exterior" value="<?php echo $GetIdEmpresa[0]->num_exter?>">
                                       <input type="text" id="cruzamiento" name="cruzamiento" class="form-control col-md-7 col-xs-12" placeholder="cruzamientos" value="<?php echo $GetIdEmpresa[0]->cruzamientos?>">
-                                      <select name="colonia" id="" class="form-control" >
-                                      <?php foreach ($ColoniasList as $key): ?>
-                                          <option <?php if($GetIdEmpresa[0]->colonia_id==$key->id) echo 'selected'?> value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
-
-                                      <?php endforeach ?>
-                                    </select>
                                     </div>
                                   </div>
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Codigo Postal
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Colonia
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="CP" name="cp" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->cp?>">
-                                    </div>
-                                  </div>
+                                      <input id="colonia" class="form-control col-md-7 col-xs-12" name="colonia" type="text" value="<?php echo $GetIdEmpresa[0]->Colonia?>" required>
+                                        <input type="hidden" name="idcolonia" id="idcolonia" value="<?php echo $GetIdEmpresa[0]->idcol?>" required>
+                                       </div>
+                                  </div> 
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="giro">Giro</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Código Postal
+                                    </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <select name="giro_id" id="" class="form-control" >
-                                      <?php foreach ($GirosList as $key): ?>
-                                          <option <?php if($GetIdEmpresa[0]->giro_id==$key->id) echo 'selected'?> value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
-
-                                      <?php endforeach ?>
-                                    </select>
+                                        <input type="text" id="cp" name="cp" class="form-control col-md-7 col-xs-12" value="<?php echo $GetIdEmpresa[0]->CP?>" disabled="false">
                                     </div>
                                   </div>
+                                  
                                   <div class="item form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">Numero de empleados
                                     </label>
@@ -102,7 +101,7 @@ $this->load->view('header');
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="website">Sector
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <select name="sector_id" id="" class="form-control" >
+                                      <select name="sector_id" id="" class="form-control"  >
                                       <?php foreach ($SectorsList as $key): ?>
                                           <option  <?php if($GetIdEmpresa[0]->sector_id==$key->id) echo 'selected'?> value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
 
@@ -144,8 +143,6 @@ $this->load->view('header');
                                   </div>
                                 </form>
 
-
-
                             </div>
                         </div>
 
@@ -164,7 +161,7 @@ $this->load->view('header');
                             <div class="x_content">
 
 
-                                <a  onclick="mContactoAgregar(<?php echo html_escape($GetIdEmpresa[0]->id) ?>)"><button type="button" class="btn btn-success">Agregar Contacto</button></a>
+                                <a  onclick="mContactoAgregar(<?php echo html_escape($GetIdEmpresa[0]->idemp) ?>)"><button type="button" class="btn btn-success">Agregar Contacto</button></a>
                                 <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                                     <thead>
                                     <tr id="filterrow">
@@ -319,7 +316,7 @@ $.post("<?php echo base_url('empresa/dataInsertContactoEmpresaJson') ?>",{nombre
             stateSave: true,
             scrollX: true,
             ordering: false,
-            ajax: "<?php echo base_url('empresa/dataListContactoEmpresaJson') ?>/<?php echo html_escape($GetIdEmpresa[0]->id) ?>",
+            ajax: "<?php echo base_url('empresa/dataListContactoEmpresaJson') ?>/<?php echo html_escape($GetIdEmpresa[0]->idemp) ?>",
             columns: [
                         { "data": "nombre_" },
                         { "data": "correo"},
@@ -341,4 +338,37 @@ $.post("<?php echo base_url('empresa/dataInsertContactoEmpresaJson') ?>",{nombre
         setInterval( function () {table.ajax.reload();}, 10000 );
 
     });
+</script>
+<!-- autocomplete -->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script >
+     $(document).ready(function() {
+              /* Colonia */
+            $( "#colonia" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>Empresa/GetBuscarColonia',
+                      select: function( event, ui ) {
+                          $( "#colonia" ).val( ui.item.nombre);
+                          $( "#idcolonia" ).val( ui.item.id );
+                         
+                          $("#cp").val( ui.item.cp);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+     });
+</script>
+<script>
+
+ var mostrarValor = function(x){
+$( "#giro" ).val(x.options[x.selectedIndex].text);
+ // alert("El valor: "+x.value+" y el texto: "+x.options[x.selectedIndex].text);
+
+}    
+ 
+
 </script>

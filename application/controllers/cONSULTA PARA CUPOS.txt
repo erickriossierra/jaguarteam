@@ -1,0 +1,6 @@
+SELECT *,total_cupoFCA- (SELECT COUNT(*) from servicio_social
+inner JOIN proyectos on servicio_social.id_proyecto=proyectos.id_proyecto
+inner JOIN usuarios on usuarios.id=servicio_social.id_alumno
+INNER JOIN carreras on usuarios.id_carrera=carreras.id
+where servicio_social.id_proyecto= 9 and id_alumno=7) as Cupo from proyectos
+where id_proyecto=9

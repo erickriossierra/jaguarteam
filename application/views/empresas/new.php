@@ -36,6 +36,13 @@ $this->load->view('header');
                                     <label for="nombre_razon_social" class="control-label col-md-3">Razón Social</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                       <input id="nombre_razon_social" type="input" name="nombre_razon_social" class="form-control col-md-7 col-xs-12">
+                                       <select name="giro_id" id="giro_id" class="form-control" onchange="mostrarValor(this)">
+                                      <?php foreach ($GirosList as $key): ?>
+                                          <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
+
+                                      <?php endforeach ?>
+                                    </select>
+                                     <input id="giro" type="hidden" name="giro" class="form-control col-md-7 col-xs-12">
                                     </div>
                                   </div>
                                   <div class="item form-group">
@@ -46,32 +53,26 @@ $this->load->view('header');
                                       <input type="text" id="num_inter" name="num_inter" class="form-control col-md-7 col-xs-12" placeholder="num interior">
                                       <input type="text" id="num_exter" name="num_exter" class="form-control col-md-7 col-xs-12" placeholder="num exterior">
                                       <input type="text" id="cruzamiento" name="cruzamiento" class="form-control col-md-7 col-xs-12" placeholder="cruzamientos">
-                                      <select name="colonia" id="" class="form-control" >
-                                      <?php foreach ($ColoniasList as $key): ?>
-                                          <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
 
-                                      <?php endforeach ?>
-                                    </select>
                                     </div>
                                   </div>
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Codigo Postal
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Colonia
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="CP" name="cp" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                  </div>
+                                      <input id="colonia" class="form-control col-md-7 col-xs-12" name="colonia" type="text" required>
+                                        <input type="hidden" name="idcolonia" id="idcolonia"  required>
+                                       </div>
+                                  </div> 
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="giro">Giro</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">Código Postal
+                                    </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <select name="giro_id" id="" class="form-control" >
-                                      <?php foreach ($GirosList as $key): ?>
-                                          <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
-
-                                      <?php endforeach ?>
-                                    </select>
+                                        <input type="text" id="cp" name="cp" class="form-control col-md-7 col-xs-12" disabled="false">
                                     </div>
                                   </div>
+
+                                 
                                   <div class="item form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">Numero de empleados
                                     </label>
@@ -85,31 +86,62 @@ $this->load->view('header');
 
                                     </div>
                                   </div>
+                                  
                                   <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="website">Sector
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <select name="sector_id" id="" class="form-control" >
-                                      <?php foreach ($SectorsList as $key): ?>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo_sector">Tipo Sector</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                          <select name="tipo_sector" id="tipo_sector" class="form-control" >
+                                          <option  value="0"></option>
+                                          <?php foreach ($SectorsList as $key): ?>
+                                              <option  value="<?php echo $key->id ?>"><?php echo $key->nombre ?></option>
+
+                                          <?php endforeach ?>
+                                        </select>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="sub_terciario">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sub_terciario">Sub Sector Terciario</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="sub_terciario" id="sub_terciario" class="form-control" >
+                                      <?php foreach ($SubSectorList3 as $key): ?>
                                           <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
 
                                       <?php endforeach ?>
                                     </select>
+
+                                        </div>
                                     </div>
                                   </div>
-                                  <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="occupation">Subsector
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                      <select name="subsector_id" id="" class="form-control" >
+                                  <div class="sub_secundario">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sub_secundario">Sub Sector Secundario</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="sub_secundario" id="sub_secundario" class="form-control" >
+                                      <?php foreach ($SubSectorList2 as $key): ?>
+                                          <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
+
+                                      <?php endforeach ?>
+                                    </select>
+
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="sub_primario">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sub_primario">Sub Sectores Primario</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="sub_primario" id="sub_primario" class="form-control" >
                                       <?php foreach ($SubSectorList as $key): ?>
                                           <option value="<?php echo $key->id ?>"> <?php echo $key->nombre ?></option>
 
                                       <?php endforeach ?>
                                     </select>
+                                        </div>
                                     </div>
                                   </div>
-
+                              
                                   <div class="item form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">Estado</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -152,5 +184,72 @@ $this->load->view('footer');
 <!-- validator -->
 
 <script src="<?php echo base_url() ?>vendors/validator/validator.js"></script>
-
+<script src="<?php echo base_url() ?>vendors/moment/min/moment.min.js"></script>
 <!-- /validator -->
+<!-- autocomplete -->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script >
+     $(document).ready(function() {
+              /* Colonia */
+            $( "#colonia" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>Empresa/GetBuscarColonia',
+                      select: function( event, ui ) {
+                          $( "#colonia" ).val( ui.item.nombre);
+                          $( "#idcolonia" ).val( ui.item.id );
+                         
+                          $("#cp").val( ui.item.cp);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+
+     });
+</script>
+<script>
+
+ var mostrarValor = function(x){
+$( "#giro" ).val(x.options[x.selectedIndex].text);
+ // alert("El valor: "+x.value+" y el texto: "+x.options[x.selectedIndex].text);
+
+}    
+ </script>
+ <script>
+   $(".sub_terciario").hide();
+   $(".sub_secundario").hide();
+   $(".sub_primario").hide();
+   $("#tipo_sector").change(function() {
+
+   var tipo_sector = $(this).val();
+  if (tipo_sector=="1"){
+    $(".sub_terciario").hide();
+    $(".sub_secundario").hide();
+    $(".sub_primario").hide();
+  }
+   else if (tipo_sector == "2") {
+     $(".sub_terciario").hide();
+     $(".sub_secundario").hide();
+     $(".sub_primario").show();
+     $(".sub_primario").show();
+     $( "#idSubSec" ).val('');
+   }
+   else if (tipo_sector == "3") {
+     $(".sub_terciario").hide();
+     $(".sub_secundario").show();
+     $(".sub_primario").hide();
+     $( "#idSubSec" ).val('');
+   }
+   if (tipo_sector == "4") {
+      $(".sub_terciario").show();
+      $(".sub_secundario").hide();
+      $(".sub_primario").hide();
+      $( "#idSubSec" ).val('');
+    }
+
+ });
+
+   </script>

@@ -83,7 +83,7 @@ $this->load->view('header');
                                           <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                               <thead>
                                               <tr id="filterrow">
-                                                  <th>Empresa / Despacho</th>
+                                                  <th>Empresa/Dependencia/Despacho</th>
                                                   <th>Tipo de Practica</th>
                                                   <th>Fecha Inicio</th>
                                                   <th>Fecha Fin</th>
@@ -95,7 +95,20 @@ $this->load->view('header');
                                                 <?php foreach ($HistorialPracticasList as $row){ ?>
                                                 <tr>
 
-                                                    <td><?php echo (html_escape($row->nombre_comercial)!=NULL) ?  html_escape($row->nombre_comercial):  html_escape($row->empresasnombre) ?></td>
+                                                    <td><?php 
+
+                                                    if($row->nombre_comercial==NULL){
+                                                       if ($row->empresasnombre==NULL){
+                                                        $val=$row->dependencianombre;
+                                                        echo (html_escape($val));
+                                                           }else{
+                                                            $val= $row->empresasnombre;
+                                                           echo (html_escape($val));
+                                                           }
+                                                     }else {
+                                                        $val= $row->nombre_comercial;
+                                                       echo (html_escape($val)); }
+                                                    ?></td>
                                                     <td><?php echo html_escape($row->tipo_practica)?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_inicio))?></td>
                                                     <td><?php echo date_format_esp(html_escape($row->practica_fin))?></td>
@@ -138,18 +151,20 @@ $this->load->view('header');
                                     </div>
 
                                     <h2>Datos Empresa</h2>
+                                 
                                     <div class="empresa">
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Empresa</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="empresa" class="form-control col-md-7 col-xs-12 autocomplete" name="empresa" type="text">
+                                            <input id="empresa" class="form-control col-md-7 col-xs-12" name="empresa" type="text">
                                             <input type="hidden" name="idEmpresa" id="idEmpresa">
+
                                         </div>
                                     </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                          <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>
+                                       <!--   <a onclick="mEmpresaAgregar()" style="cursor:pointer">  Agregar empresa si no existe</a>-->
                                         </div>
                                     </div>
                                   </div>
@@ -169,10 +184,28 @@ $this->load->view('header');
                                         </div>
                                     </div>
                                   </div>
+                                  <div class="dependencia">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Dependencia</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="dependencia" class="form-control col-md-7 col-xs-12" name="dependencia" type="text">
+                                            <input type="hidden" name="idDepedencia" id="idDepedencia">
+
+                                        </div>
+                                    </div>
+                                    
+                                  </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="representante" class="form-control col-md-7 col-xs-12" name="representante" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Jefe directo</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="jefe" class="form-control col-md-7 col-xs-12" name="jefe" type="text">
                                         </div>
                                     </div>
 
@@ -188,6 +221,7 @@ $this->load->view('header');
                                             <input id="practica_fin" class="form-control col-md-7 col-xs-12" name="practica_fin" type="text">
                                         </div>
                                     </div>
+
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="practica_fin">Apoyo Económico</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -198,6 +232,7 @@ $this->load->view('header');
                                         </select>
                                         </div>
                                     </div>
+
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="info">Información</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -225,7 +260,7 @@ $this->load->view('header');
 
 <!--Modales-->
  <!--Ver Historial-->
- <!--Ventana mAlarmsEditView--->
+ <!--Ventana mAlarmsEditView-->
 
 <div class="modal fade" id="mPracticaViewEdit">
     <div class="modal-dialog">
@@ -255,6 +290,12 @@ $this->load->view('header');
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input readonly="readonly" id="mrepresentante" class="form-control col-md-7 col-xs-12" name="mrepresentante" type="text">
+                    </div>
+                </div>
+                <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Jefe Directo</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input readonly="readonly" id="mjefe" class="form-control col-md-7 col-xs-12" name="mjefe" type="text">
                     </div>
                 </div>
                 <div class="item form-group">
@@ -364,7 +405,7 @@ $this->load->view('footer');
                  };
 
 
-                 /*Empresa*/
+                 /*Despacho*/
                  $( "#despacho" ).autocomplete({
                       minLength: 0,
                       source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
@@ -372,6 +413,24 @@ $this->load->view('footer');
                           $( "#despacho" ).val( ui.item.nombre);
                           $( "#idDespacho" ).val( ui.item.id );
                           $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+
+                 /*Dependencia*/
+                 $( "#dependencia" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDependencia',
+                      select: function( event, ui ) {
+                          $( "#dependencia" ).val( ui.item.nombre);
+                          $( "#idDepedencia" ).val( ui.item.id );
+                        //  $("#registrocp").val( ui.item.colegio);
                           return false;
                       }
                   })
@@ -417,6 +476,7 @@ $this->load->view('footer');
                        $('#mempresa').val(data[0].nombre_comercial);
                        $('#mtipo_practica').val(data[0].tipo_practica);
                        $('#mrepresentante').val(data[0].representante);
+                     //  $('#mjefe').val(data[0].jefe);
                        $('#mregistrocp').val(data[0].registroCP);
                        $('#mpractica_inicio').val(data[0].practica_inicio);
                        $('#mpractica_fin').val(data[0].practica_fin);
@@ -460,29 +520,31 @@ $this->load->view('footer');
    }
    </script>
    <script>
-   $(".empresa").hide();
+  $(".empresa").hide();
    $(".despacho").hide();
+   $(".dependencia").hide();
    $("#tipo_practica").change(function() {
 
    var tipo_practica = $(this).val();
   if (tipo_practica == "1") {
-     $(".empresa").show();
+     $(".empresa").hide();
      $(".despacho").hide();
+     $(".dependencia").show();
      $( "#idDespacho" ).val('');
-     $("#registrocp").val( '');
+     $("#registrocp").val('');
    }
    else if (tipo_practica == "2") {
      $(".empresa").hide();
      $(".despacho").show();
+     $(".dependencia").hide();
      $( "#idEmpresa" ).val('');
    }
    if (tipo_practica == "3") {
       $(".empresa").show();
       $(".despacho").hide();
-      $( "#idDespacho" ).val('');
-      $("#registrocp").val('');
+      $(".dependencia").hide();
+      $( "#idDepedencia" ).val('');
     }
-
   });
 
    </script>

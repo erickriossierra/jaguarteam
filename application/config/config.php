@@ -23,8 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/uady/';
-
+//$config['base_url'] = 'http://localhost:8080/JaguarTeam/'; CON PUERTO Y SIN APACHE
+$config['base_url'] = 'http://localhost/JaguarTeam/'; // SIN APACHE DIRECCIONADO
+//$config['base_url'] = 'http://localhost/';//POR APACHE DIRECCIONADO
 /*
 |--------------------------------------------------------------------------
 | Index File

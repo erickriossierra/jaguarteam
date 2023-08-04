@@ -11,6 +11,7 @@ class SubSector extends CI_Controller {
         }
         $this->name_session  =  $this->session->userdata('nameS');
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
+        $this->idUser_session = $this->session->userdata('idUserS');
 
         $this->load->model('subsectors_model');
         $this->load->helper('form');
@@ -31,13 +32,13 @@ class SubSector extends CI_Controller {
       if($SectorsList==False)
       {
         $data[]=array(
-        "id"=>'',
-        "nombre"=>''
+        "subsector.id"=>'',
+        "subsector.nombre"=>''
         );
       }else{
           foreach ($SectorsList as $key) {
             $data[]=array(
-            "id"=>$key->id,
+           // "subsector.id"=>$key->id,
             "nombre"=> $key->nombre
             );
 
@@ -48,6 +49,7 @@ class SubSector extends CI_Controller {
 
 
     }
+
 
     public function addView()
     {

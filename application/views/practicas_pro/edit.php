@@ -62,6 +62,17 @@ $this->load->view('header');
                                       </div>
                                   </div>
                                 </div>
+                                <div class="dependencia">
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Dependencia</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="dependencia" class="form-control col-md-7 col-xs-12" name="dependencia" type="text" value="<?php echo html_escape($GetIdPracticas[0]->dependencianombre) ?>">
+                                            <input type="hidden" name="idDepedencia" id="idDepedencia" value="<?php echo html_escape($GetIdPracticas[0]->dependenciaid) ?>" >
+
+                                        </div>
+                                    </div>
+                                    
+                                  </div>
                                 <div class="item form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="empresa">Representante</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -160,7 +171,7 @@ $this->load->view('footer');
                  };
 
 
-                 /*Empresa*/
+                 /*Despacho*/
                  $( "#despacho" ).autocomplete({
                       minLength: 0,
                       source: '<?php echo base_url() ?>PracticasPro/BuscarDespacho',
@@ -177,6 +188,25 @@ $this->load->view('footer');
                           .append( "<div>" + item.nombre + "</div>" )
                           .appendTo( ul );
                            };
+
+                 /*Dependencia*/
+                 $( "#dependencia" ).autocomplete({
+                      minLength: 0,
+                      source: '<?php echo base_url() ?>PracticasPro/BuscarDependencia',
+                      select: function( event, ui ) {
+                          $( "#dependencia" ).val( ui.item.nombre);
+                          $( "#idDepedencia" ).val( ui.item.id );
+                        //  $("#registrocp").val( ui.item.colegio);
+                          return false;
+                      }
+                  })
+                      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                      return $( "<li>" )
+                      //.append( "<div>" + item.name + "<br>" + item.name + "</div>" )
+                          .append( "<div>" + item.nombre + "</div>" )
+                          .appendTo( ul );
+                           };
+
 
         /*Habilitar Registro*/
 
@@ -200,33 +230,31 @@ $this->load->view('footer');
    </script>
 <!-- /validator -->
 <script>
-$(".empresa").hide();
-$(".despacho").hide();
-$("#tipo_practica").change(function() {
-
-var tipo_practica = $(this).val();
-if (tipo_practica == "1") {
-  $(".empresa").show();
-  $(".despacho").hide();
-  $( "#idDespacho" ).val('');
-  $("#registrocp").val('');
-  $( "#empresa" ).val('');
-}
-else if (tipo_practica == "2") {
-  $(".empresa").hide();
-  $(".despacho").show();
-  $( "#idEmpresa" ).val('');
-    $("#despacho" ).val('');
-
-}
-if (tipo_practica == "3") {
-   $(".empresa").show();
+   $(".empresa").hide();
    $(".despacho").hide();
-   $( "#idDespacho" ).val('');
-   $("#registrocp").val('');
-   $( "#empresa" ).val('');
- }
+   $(".dependencia").hide();
+   $("#tipo_practica").change(function() {
 
+   var tipo_practica = $(this).val();
+  if (tipo_practica == "1") {
+     $(".empresa").hide();
+     $(".despacho").hide();
+     $(".dependencia").show();
+     $( "#idDespacho" ).val('');
+     $("#registrocp").val('');
+   }
+   else if (tipo_practica == "2") {
+     $(".empresa").hide();
+     $(".despacho").show();
+     $(".dependencia").hide();
+     $( "#idEmpresa" ).val('');
+   }
+   if (tipo_practica == "3") {
+      $(".empresa").show();
+      $(".despacho").hide();
+      $(".dependencia").hide();
+      $( "#idDepedencia" ).val('');
+    }
 });
 
 
@@ -234,18 +262,20 @@ if (tipo_practica == "3") {
 var tipo_practica_inicio = '<?php echo html_escape($GetIdPracticas[0]->tipo_practica_id )?>';
 console.log(tipo_practica_inicio);
 if (tipo_practica_inicio == "1") {
-  $(".empresa").show();
-  $(".despacho").hide();
-
+   $(".empresa").hide();
+   $(".despacho").hide();
+   $(".dependencia").show();
 }
 else if (tipo_practica_inicio == "2") {
   $(".empresa").hide();
   $(".despacho").show();
+  $(".dependencia").hide();
 
 }
 if (tipo_practica_inicio == "3") {
-   $(".empresa").show();
-   $(".despacho").hide();
+  $(".empresa").show();
+  $(".despacho").hide();
+  $(".dependencia").hide();
 
  }
 

@@ -22,7 +22,7 @@ $this->load->view('header');
 <link href="<?php echo base_url() ?>vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url() ?>vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url() ?>vendors/yadcf/jquery.dataTables.yadcf.css" rel="stylesheet" type="text/css" />
-	<link href="<?php echo base_url() ?>vendors/yadcf/jquery-ui.1.9.0.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url() ?>vendors/yadcf/jquery-ui.1.9.0.css" rel="stylesheet" type="text/css" />
 <div class="right_col noheigthwidt" role="main" >
 
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -41,12 +41,12 @@ $this->load->view('header');
                     <th>Alumno</th>
                     <th>Tipo Practica </th>
                     <th>Carrera</th>
-										<th>Empresa / Despacho / Dependencia </th>
+					<th>Empresa / Despacho / Dependencia </th>
                     <th>Representante</th>
                     <th>Reg. CCPYA.E</th>
                     <th>Inicio</th>
                     <th>Termino</th>
-										<th>Estatus</th>
+					<th>Estatus</th>
                 </tr>
                 </thead>
 
@@ -111,13 +111,13 @@ $this->load->view('footer');
                 aoColumns: [
                             { "data": "nombre" },
                             { "data": "tipo_practica"},
-														{ "data": "carrera" },
-														{	"data":	"lugar"},
-													  { "data": "representante" },
+							{ "data": "carrera" },
+							{	"data":	"lugar"},
+							{ "data": "representante" },
                             { "data": "registroCP" },
                             { "data": "practica_inicio" },
                             { "data": "practica_fin" },
-														{ "data": "estatus" },
+							{ "data": "estatus" },
 
                         ]
 
@@ -129,8 +129,8 @@ $this->load->view('footer');
 						{column_number: 1,filter_type: "text"},
 						{column_number: 2,filter_type: "select"},
 						{column_number: 3,filter_type: "text"},
-            {column_number: 6,filter_type: "range_date",date_format: "dd-mm-yyyy"},
-            {column_number: 7,filter_type: "range_date",date_format: "dd-mm-yyyy"},
+                        {column_number: 6,filter_type: "range_date",date_format: "dd-mm-yyyy"},
+                        {column_number: 7,filter_type: "range_date",date_format: "dd-mm-yyyy"},
 						{column_number: 8,filter_type: "select"}
             ]);
 

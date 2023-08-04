@@ -16,10 +16,38 @@ class Subsectors_model extends CI_Model {
         return $query->result();
 
     }
+    public function SubSectorLists()
+    {
+        
+        $this->db->order_by('nombre');
+        $query=$this->db->get('subsector');
+        //echo $this->db->last_query();
+        return $query->result();
 
+    }
     public function SubSectorListsForm()
     {
+        $this->db->where('sector_id=2');
+        $this->db->order_by('nombre');
+        $query=$this->db->get('subsector');
+        //echo $this->db->last_query();
+        return $query->result();
 
+    }
+    
+    public function SubSectorListsForm2()
+    {
+        $this->db->where('sector_id=3');
+        $this->db->order_by('nombre');        
+        $query=$this->db->get('subsector');
+        //echo $this->db->last_query();
+        return $query->result();
+
+    }
+    public function SubSectorListsForm3()
+    {
+        $this->db->where('sector_id=4');
+        $this->db->order_by('nombre');
         $query=$this->db->get('subsector');
         //echo $this->db->last_query();
         return $query->result();
@@ -54,6 +82,23 @@ class Subsectors_model extends CI_Model {
     {
         $this->db->where($id);
         $result = $this->db->get('subsector');
+        //echo $this->db->last_query();
+         if ($result->num_rows()>0) {
+            return $result->result();
+        }else{
+            return False;
+        }
+    }
+
+    public function GetIdSubSector_Sector($id='')
+    {
+        $this->db->select('*, subsector.id as idsub, subsector.nombre as sub');
+        $this->db->from("subsector");
+        $this->db->join("sector", "subsector.sector_id=sector.id");
+        $this->db->where($id);
+       // $this->db->order_by("subsector.nombre","DESC");
+
+        $result = $this->db->get();
         //echo $this->db->last_query();
          if ($result->num_rows()>0) {
             return $result->result();

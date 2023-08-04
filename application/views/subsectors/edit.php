@@ -41,7 +41,7 @@ $this->load->view('header');
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-6 col-md-offset-3">
-                                          <a href="<?php echo $_SERVER['HTTP_REFERER']?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
+                                          <a href="<?php echo  base_url('Sector')?>">  <button type="button" class="btn btn-primary">Cancelar</button></a>
                                             <button id="send" type="submit" class="btn btn-success">Guardar</button>
                                         </div>
                                     </div>

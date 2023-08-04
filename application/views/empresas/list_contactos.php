@@ -32,11 +32,12 @@ $this->load->view('header');
             <table id="datatable-responsive" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr id="filterrow">
+                  <th>Nombre comercial</th>
                   <th>Nombre</th>
                   <th>Correo</th>
                   <th>Telefono</th>
                   <th>Depto.</th>
-                  <th>Nombre comercial</th>
+                  
                   <th>Nombre razon_social</th>
 
 
@@ -102,11 +103,12 @@ $this->load->view('footer');
                   
                            ],
                 columns: [
+                            { "data": "nombre_comercial" },
                             { "data": "nombre_" },
                             { "data": "correo"},
                             { "data": "telefono"},
                             { "data": "depto"},
-                            { "data": "nombre_comercial" },
+                            
                             { "data": "nombre_razon_social" },
 
                         ]
@@ -116,11 +118,11 @@ $this->load->view('footer');
 
 
                         yadcf.init(table, [
-                        {column_number: 1,filter_type: "multi_select",select_type: 'select2'},
-                        {column_number: 2,filter_type: "text"},
-                        {column_number: 0,filter_type: "text"},
+                        {column_number: 2,filter_type: "multi_select",select_type: 'select2'},
                         {column_number: 3,filter_type: "text"},
-                        {column_number: 4,filter_type: "text"}
+                        {column_number: 1,filter_type: "text"},
+                        {column_number: 4,filter_type: "text"},
+                        {column_number: 0,filter_type: "multi_select",select_type: 'select2'}
                         ]);
 
         });

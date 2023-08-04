@@ -11,10 +11,10 @@ $this->load->view('header');
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-            <h2>Tabla de Colonias</h2>
+            <h2>Tabla de Dependencias</h2>
 
             <div class="clearfix"></div>
-            <a href="<?php echo base_url() ?>colonia/addView"> <button type="button" class="btn btn-success">Agregar Colonia</button></a>
+            <a href="<?php echo base_url() ?>Dependencia/addView"> <button type="button" class="btn btn-success">Agregar Dependencia</button></a>
         </div>
         <div class="x_content">
 
@@ -22,7 +22,8 @@ $this->load->view('header');
                 <thead>
                 <tr id="filterrow">
 
-                    <th>Colonia</th>
+                    <th>Dependencia</th>
+                    <th>Campus</th>
                     <th>Editar</th>
               </tr>
                 </thead>
@@ -64,16 +65,17 @@ $this->load->view('footer');
           var table = $('#datatable-responsive').DataTable({
                 processing: true,
                 ordering: false,
-                ajax: "<?php echo base_url('Colonia/dataListJson') ?>",
+                ajax: "<?php echo base_url('Dependencia/dataListJson') ?>",
                 columns: [
                             { "data": "nombre" },
+                            { "data": "campus" },
 
                         ],
                 columnDefs: [ {
-                            "targets": 1,
+                            "targets": 2,
                             "data": "id",
                             "render": function ( data, type, full, meta ) {
-                              return '<a href="<?php echo base_url('Colonia/editView/') ?>'+data+'">Editar</a>';
+                              return '<a href="<?php echo base_url('Dependencia/editView/') ?>'+data+'">Editar</a>';
                                  }
                           }
                         ]

@@ -11,6 +11,7 @@ class Colonia extends CI_Controller {
         }
         $this->name_session  =  $this->session->userdata('nameS');
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
+        $this->idUser_session = $this->session->userdata('idUserS');
 
         $this->load->model('colonias_model');
         $this->load->helper('form');
@@ -37,6 +38,7 @@ class Colonia extends CI_Controller {
             $data[]=array(
             "id"=>$key->id,
             "nombre"=> $key->nombre,
+            "cp"=>$key->CP,
             );
 
         }
@@ -62,7 +64,8 @@ class Colonia extends CI_Controller {
     {
 
         $nombre           = $this->input->post('nombre');
-        $value_insert =array('nombre'=>$nombre);
+        $cp           =$this->input->post('cp');
+        $value_insert =array('nombre'=>$nombre, 'CP'=>$cp);
         $this->colonias_model->CreateColonias($value_insert);
         redirect(base_url('Colonia'));
 
@@ -91,8 +94,9 @@ class Colonia extends CI_Controller {
     {
 
 
-      $nombre           = $this->input->post('nombre');
-      $value_update =array('nombre'=>$nombre);
+      $nombre       = $this->input->post('nombre');
+      $cp           = $this->input->post('cp');
+      $value_update =array('nombre'=>$nombre, 'CP'=>$cp );
       $this->colonias_model-> UpdateColonias($value_update,array('id' => $id ));
         //$this->parser->parse('welcome',$data);
         redirect(base_url('Colonia'));

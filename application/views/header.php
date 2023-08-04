@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sistema Uady </title>
+    <title>JaguarShop</title>
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url() ?>vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                  <a href="index.html" class="site_title"><i class="fa fa-database" aria-hidden="true"></i></a>
+                  <a href="<?php echo base_url('welcome/logout') ?>" class="site_title"><i class="fa fa-database" aria-hidden="true"></i></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -51,29 +51,40 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section">
+<?php if ($this->idtypeUser_session!=4){ ?>
                         <h3>General</h3>
                         <ul class="nav side-menu">
-
-                          <?php if ($this->idtypeUser_session==1){ ?>
+<?php }?>
+<?php if ($this->idtypeUser_session==1){ ?>
                             <li><a href="<?php echo base_url() ?>user"><i class="fa fa-user-plus" aria-hidden="true"></i></i>Usuarios</span></a> </li>
 
                             <hr>
-                          <?php } ?>
-                            <?php if ($this->idtypeUser_session==3 OR $this->idtypeUser_session==1){ ?>
-                            <li><a href="<?php echo base_url() ?>Empresa"><i class="fa fa-users" aria-hidden="true"></i>Empresas</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>Empresa/ContactosListEmpresas"><i class="fa fa-users" aria-hidden="true"></i>Contacto Por Empresas</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>giro"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Giros Empresa</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>sector"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Sector</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>colonia"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Colonias</span></a> </li>
+        <?php } ?>
+
+<?php if ($this->idtypeUser_session==2 OR $this->idtypeUser_session==3 OR $this->idtypeUser_session==1  ){ ?>
+                            <li><a href="<?php echo base_url() ?>pedidos"><i class="fa fa-book" aria-hidden="true"></i>Pedidos</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>estatus"><i class="fa fa-money" aria-hidden="true"></i>Asignar Anticipo</span></a> </li>
+                             <li><a href="<?php echo base_url() ?>Pagos"><i class="fa fa-sellsy" aria-hidden="true"></i>Pagos</span></a> </li>
                             <hr>
-                            <?php } ?>
-                            <?php if ($this->idtypeUser_session==2 OR $this->idtypeUser_session==1){ ?>
-                            <li><a href="<?php echo base_url() ?>PracticasPro"><i class="fa fa-users" aria-hidden="true"></i>Practicas Profesionales</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>Despacho"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Despachos</span></a> </li>
-                            <li><a href="<?php echo base_url() ?>PracticasPro/Reporte"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Reporte</span></a> </li>
-                            <?php } ?>
+                            <li><a href="<?php echo base_url() ?>clientes"><i class="fa fa-users" aria-hidden="true"></i>Clientes</span></a> </li>
+                            <hr>
+<?php if ($this->idtypeUser_session==3 OR $this->idtypeUser_session==1  ){ ?>                            
+                            <li><a href="<?php echo base_url() ?>vendedores"><i class="fa fa-users" aria-hidden="true"></i>Vendedores</span></a> </li>
+                            <hr>
+                            <li><a href="<?php echo base_url() ?>inventarios"><i class="fa fa-book" aria-hidden="true"></i>Inventario</span></a> </li>
 
+<?php } ?>
 
+<?php if ( $this->idtypeUser_session==1 ){ ?>
+                        <!--    <li><a href="<?php echo base_url() ?>Despacho"><i class="fa fa-briefcase" aria-hidden="true"></i></i>Despachos</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>Despacho/ContactosListDespachos"><i class="fa fa-users" aria-hidden="true"></i>Contacto Por Despacho</span></a> </li> -->
+        <?php } ?>
+                            
+       <!--                     <li><a href="<?php echo base_url() ?>giro"><i class="fa fa-list-ul" aria-hidden="true"></i></i>Giros Empresa</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>sector"><i class="fa fa-caret-right" aria-hidden="true"></i></i>Sector</span></a> </li>
+                            <li><a href="<?php echo base_url() ?>colonia"><i class="fa fa-map-marker" aria-hidden="true"></i></i>Colonias</span></a> </li>
+-->
+        <?php } ?> 
 
 
                         </ul>

@@ -11,6 +11,7 @@ class Empresa extends CI_Controller {
         }
         $this->name_session  =  $this->session->userdata('nameS');
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
+        $this->idUser_session = $this->session->userdata('idUserS');
 
         $this->load->model('empresas_model');
         $this->load->model('giros_model');
@@ -40,7 +41,7 @@ class Empresa extends CI_Controller {
         $data[]=array(
         "id"=>'',
         "clasificacion_empresa"=>'',
-        "giroempresa"=>'',
+       // "giroempresa"=>'',
         "calle"=> '',
         "num_inter"=> '',
         "num_exter"=> '',
@@ -56,15 +57,15 @@ class Empresa extends CI_Controller {
             $data[]=array(
             "id"=>$key->empresasid,
             "clasificacion_empresa"=>$key->clasificacion,
-            "giroempresa"=>$key->giroempresa,
+           // "giroempresa"=>$key->giroempresa,
             "calle"=> $key->calle,
             "num_inter"=> $key->num_inter,
             "num_exter"=> $key->num_exter,
             "cruzamiento"=> $key->cruzamientos,
             "colonia"=> $key->colonia,
-            "cp"=> $key->cp,
+            "cp"=> $key->CP,
             "nombre_comercial"=> $key->nombre_comercial,
-            "nombre_razon_social"=> $key->nombre_razon_social,
+            "nombre_razon_social"=> $key->nombre_comp,
             );
 
           }
@@ -80,14 +81,20 @@ class Empresa extends CI_Controller {
       $GirosList=$this->giros_model->GirosListForm();
       $ColoniasList=$this->colonias_model->ColoniasList();
       $SubSectorList=$this->subsectors_model->SubSectorListsForm();
+      $SubSectorList2=$this->subsectors_model->SubSectorListsForm2();
+      $SubSectorList3=$this->subsectors_model->SubSectorListsForm3();
       $SectorsList=$this->sectors_model->SectorsListForm();
       $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
       $EstadosList=$this->empresas_model->estadosList();
         $data = array(
             'title' => 'prueba',
             'GirosList'=>$GirosList,
-            'SubSectorList'=>$SubSectorList,
             'SectorsList'=>$SectorsList,
+
+            'SubSectorList'=>$SubSectorList,
+            'SubSectorList2'=>$SubSectorList2,
+            'SubSectorList3'=>$SubSectorList3,
+
             'ColoniasList'=>$ColoniasList,
             'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
             'EstadosList'=>$EstadosList
@@ -104,24 +111,49 @@ class Empresa extends CI_Controller {
         $num_inter=$this->input->post('num_inter');
         $num_exter=$this->input->post('num_exter');
         $cruzamiento=$this->input->post('cruzamiento');
-        $colonia=$this->input->post('colonia');
-        $cp=$this->input->post('cp');
+        $colonia=$this->input->post('idcolonia');
+        //$cp=$this->input->post('cp');
         $nombre_comercial=$this->input->post('nombre_comercial');
         $nombre_razon_social=$this->input->post('nombre_razon_social');
         $giro_id=$this->input->post('giro_id');
+        $giro=$this->input->post('giro');
         $clasificacion_empresa_id=$this->input->post('clasificacion_empresa_id');
-        $sector_id=$this->input->post('sector_id');
-        $subsector_id=$this->input->post('subsector_id');
+        $sector_id=$this->input->post('tipo_sector');
+        $sub_terciario=$this->input->post('sub_terciario');
+        $sub_secundario=$this->input->post('sub_secundario');
+        $sub_primario=$this->input->post('sub_primario');
+        $subsector_id='';
         $entidades_id=$this->input->post('entidades_id');
+        if ($num_exter=='') {
+          $num_exter="N/A";
+        }
+        if ($calle=='') {
+          $calle="N/A";
+        }
+        if ($num_inter=='') {
+          $num_inter="N/A";
+        }
+
+        if ($sub_terciario==''){
+            if ($sub_secundario=='') {
+              $subsector_id=$sub_primario;
+            } else {
+              $subsector_id=$sub_secundario;
+            } 
+        }else {
+          $subsector_id=$sub_terciario;
+        }
+
         $value_insert =array(
+         
+          'nombre_comercial'=>$nombre_comercial,
+          'nombre_razon_social'=>$nombre_razon_social,
           'calle'=>$calle,
           'num_inter'=>$num_inter,
           'num_exter'=>$num_exter,
           'cruzamientos'=>$cruzamiento,
           'colonia_id'=>$colonia,
-          'cp'=>$cp,
-          'nombre_comercial'=>$nombre_comercial,
-          'nombre_razon_social'=>$nombre_razon_social,
+          //'cp'=>$cp,
           'giro_id'=>$giro_id,
           'clasificacion_empresa_id'=>$clasificacion_empresa_id,
           'sector_id'=>$sector_id,
@@ -138,9 +170,10 @@ class Empresa extends CI_Controller {
     public function editView($id)
     {
 
-      $GetIdEmpresa=$this->empresas_model->GetIdEmpresa(array('id'=>$id));
+      $GetIdEmpresa=$this->empresas_model->GetIdEmpresa(array('empresas.id'=>$id));
       $GirosList=$this->giros_model->GirosListForm();
-      $SubSectorList=$this->subsectors_model->SubSectorListsForm();
+      $SubSectorList=$this->subsectors_model->SubSectorLists();
+      $sslist=$this->subsectors_model->GetIdSubSector_Sector(array('subsector.sector_id'=>$GetIdEmpresa[0]->sector_id));
       $SectorsList=$this->sectors_model->SectorsListForm();
       $ClasificacionEmpresaList=$this->empresas_model->clasificacionEmpresaList();
       $EstadosList=$this->empresas_model->estadosList();
@@ -153,7 +186,8 @@ class Empresa extends CI_Controller {
             'ColoniasList'=>$ColoniasList,
             'ClasificacionEmpresaList'=>$ClasificacionEmpresaList,
             'EstadosList'=>$EstadosList,
-            'GetIdEmpresa'=>$GetIdEmpresa
+            'GetIdEmpresa'=>$GetIdEmpresa,
+            'sslist'=>$sslist
 
         );
         $this->parser->parse('empresas/edit',$data);
@@ -169,29 +203,30 @@ class Empresa extends CI_Controller {
       $num_inter=$this->input->post('num_inter');
       $num_exter=$this->input->post('num_exter');
       $cruzamiento=$this->input->post('cruzamiento');
-      $colonia=$this->input->post('colonia');
-      $cp=$this->input->post('cp');
+      $colonia=$this->input->post('idcolonia');
+     // $cp=$this->input->post('cp');
       $nombre_comercial=$this->input->post('nombre_comercial');
       $nombre_razon_social=$this->input->post('nombre_razon_social');
       $giro_id=$this->input->post('giro_id');
+      $giro=$this->input->post('giro');
       $clasificacion_empresa_id=$this->input->post('clasificacion_empresa_id');
       $sector_id=$this->input->post('sector_id');
       $subsector_id=$this->input->post('subsector_id');
       $entidades_id=$this->input->post('entidades_id');
       $value_update =array(
-        'calle'=>$calle,
-        'num_inter'=>$num_inter,
-        'num_exter'=>$num_exter,
-        'cruzamientos'=>$cruzamiento,
-        'colonia_id'=>$colonia,
-        'cp'=>$cp,
         'nombre_comercial'=>$nombre_comercial,
-        'nombre_razon_social'=>$nombre_razon_social,
-        'giro_id'=>$giro_id,
-        'clasificacion_empresa_id'=>$clasificacion_empresa_id,
-        'sector_id'=>$sector_id,
-        'subsector_id'=>$subsector_id,
-        'entidades_id'=>$entidades_id,
+          'nombre_razon_social'=>$nombre_razon_social,
+          'calle'=>$calle,
+          'num_inter'=>$num_inter,
+          'num_exter'=>$num_exter,
+          'cruzamientos'=>$cruzamiento,
+          'colonia_id'=>$colonia,
+          //'cp'=>$cp,
+          'giro_id'=>$giro_id,
+          'clasificacion_empresa_id'=>$clasificacion_empresa_id,
+          'sector_id'=>$sector_id,
+          'subsector_id'=>$subsector_id,
+          'entidades_id'=>$entidades_id,
       );
       $this->empresas_model->UpdateEmpresa($value_update,array('id' => $id ));
         //$this->parser->parse('welcome',$data);
@@ -201,9 +236,6 @@ class Empresa extends CI_Controller {
 
     public function dataDelete($id)
     {
-
-
-
         $this->empresas_model-> UpdateEmpresa(array('status'=>0),array('id' => $id ));
         redirect(base_url('Empresa'));
 
@@ -270,7 +302,7 @@ class Empresa extends CI_Controller {
         foreach ($ContactoByEmpresaList as $key) {
             $data[]=array(
             "id"=>$key->contactoid,
-            "nombre_"=>$key->nombre,
+            "nombre_"=>$key->nombrecont,
             "correo"=>$key->correo,
             "telefono"=>$key->telefono,
             "depto"=> $key->depto,
@@ -316,12 +348,12 @@ class Empresa extends CI_Controller {
             foreach ($ContactoByEmpresaList as $key) {
                 $data[]=array(
                 "id"=>$key->contactoid,
-                "nombre_"=>$key->nombre,
+                "nombre_"=>$key->nombrecont,
                 "correo"=>$key->correo,
                 "telefono"=>$key->telefono,
                 "depto"=> $key->depto,
                 "nombre_comercial"=> $key->nombre_comercial,
-                "nombre_razon_social"=> $key->nombre_razon_social
+                "nombre_razon_social"=> $key->nombre_comp,
                 );
 
             }
@@ -380,6 +412,43 @@ class Empresa extends CI_Controller {
 
           }
 
+ /*Busqueda de colonia*/
+    public function GetBuscarColonia(){
+      $searchTerm = $this->input->get('term');
 
+       $search=$this->colonias_model->GetBuscarColonia(array('nombre'=>$searchTerm));
 
+       $data=array();
+       if ($search==FALSE)
+       {
+         $data[]=array(
+         "id"=>'0',
+         "nombre"   => 'No existe',
+         "cp"=> 'No disponible',
+         );
+       }else{
+       foreach ($search as $key) {
+           $data[]=array(
+           "id"       =>$key->id,
+           "nombre"   => $key->nombre,
+           "cp"       =>$key->CP,
+           
+           );
+
+       }
+      }
+       echo json_encode($data);
+    }
+
+    public function SubSectorList($id){
+
+      $sslist=$this->subsectors_model->GetIdSubSector_Sector(array('subsector.sector_id'=>$GetIdEmpresa[0]->sector_id));
+        $data = array(
+            'title' => 'prueba',
+            'sslist'=>$sslist,
+
+              );
+            //  $this->parser->parse('empresas/editContactosEmpresa',$data);
+            echo json_encode($data);
+          }
 }

@@ -11,6 +11,7 @@ class User extends CI_Controller {
         }
         $this->name_session  =  $this->session->userdata('nameS');
         $this->idtypeUser_session = $this->session->userdata('idtypeUserS');
+        $this->idUser_session = $this->session->userdata('idUserS');
 
         $this->load->model('users_model');
         $this->load->helper('form');

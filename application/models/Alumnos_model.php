@@ -60,6 +60,11 @@ class Alumnos_model extends CI_Model {
 
     public function GetBuscarAlumno($data)
     {
+      $this->db->select("*, alumnos.id as idAlumno, alumnos.nombre as alumno,CONCAT( alumnos.nombre,' ',apellido_paterno,' ',apellido_materno) as Nombre_cp");
+      $this->db->select("carreras.id as idcarrera, carreras.Nombre as Carrera");
+      //$this->db->from('alumnos');
+      $this->db->join("carreras", "alumnos.carreras_id=carreras.id");
+      
       $this->db->like($data);
       $result = $this->db->get('alumnos');
       //echo $this->db->last_query();
@@ -75,15 +80,29 @@ class Alumnos_model extends CI_Model {
     public function AlumnosCarrerasList()
   {
 
-      $this->db->select("alumnos.id, alumnos.nombre, apellido_materno,apellido_paterno,carreras.Nombre as carrera ");
+      $this->db->select("DISTINCT(alumnos.id) as idAlumno, alumnos.nombre, apellido_materno,apellido_paterno,carreras.Nombre as carrera ");
       $this->db->from("alumnos");
       $this->db->join("carreras", "alumnos.carreras_id=carreras.id");
+      $this->db->join("practicas_profesionales", "alumnos.id=practicas_profesionales.Alumnos_id");
       $this->db->order_by("alumnos.nombre","DESC");
       $query = $this->db->get();
       //echo $this->db->last_query();
       return $query->result();
   }
 
+    /*Servicio Social List con Alumnos*/
+    public function AlumnosServicioList()
+  {
+
+      $this->db->select("DISTINCT(alumnos.id) as idAlumno, alumnos.nombre, apellido_materno,apellido_paterno,carreras.Nombre as carrera ");
+      $this->db->from("alumnos");
+      $this->db->join("carreras", "alumnos.carreras_id=carreras.id");
+      $this->db->join("servicio_social", "alumnos.id=servicio_social.id_alumno");
+      $this->db->order_by("alumnos.nombre","DESC");
+      $query = $this->db->get();
+      //echo $this->db->last_query();
+      return $query->result();
+  }
 
 
 }
